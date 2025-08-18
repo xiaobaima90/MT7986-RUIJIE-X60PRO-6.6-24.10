@@ -1303,11 +1303,11 @@ return view.extend({
 					o = ss.taboption('advanced', form.Flag, 'isolate', _('Isolate Clients'), _('Prevents client-to-client communication'));
 					o.depends('mode', 'ap');
 
-					o = ss.taboption('advanced', form.Flag, 'ieee80211k', _('802.11k'), _('Enables The 802.11k standard provides information to discover the best available access point'));
+					o = ss.taboption('advanced', form.Flag, 'ieee80211k', _('802.11k'), _('Radio Resource Measurement - Sends beacons to assist roaming. Not all clients support this.'));
 					o.default = o.enabled;
 					o.depends('mode', 'ap');
 					
-					o = ss.taboption('advanced', form.Flag, 'ieee80211r', _('802.11r'), _('only supports mt_wifi driver'));
+					o = ss.taboption('advanced', form.Flag, 'ieee80211r', _('802.11r'), _('Enables fast roaming among access points that belong to the same Mobility Domain'));
 					o.default = o.disabled;
 					o.depends('mode', 'ap');
 

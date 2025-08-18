@@ -105,6 +105,146 @@ define Build/cetron-header
 	rm $@.tmp
 endef
 
+define Device/ruijie-rg-x60-pro-stock
+  DEVICE_VENDOR := Ruijie
+  DEVICE_MODEL := Ruijie RG-X60 Pro (Stock)
+  DEVICE_DTS := mt7986a-ruijie-rg-x60-pro-stock
+  DEVICE_DTS_DIR := ../dts
+  SUPPORTED_DEVICES := ruijie,rg-x60-pro-stock
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += ruijie-rg-x60-pro-stock
+
+define Device/ruijie-rg-x60-pro
+  DEVICE_VENDOR := Ruijie
+  DEVICE_MODEL := Ruijie RG-X60 Pro
+  DEVICE_DTS := mt7986a-ruijie-rg-x60-pro
+  DEVICE_DTS_DIR := ../dts
+  SUPPORTED_DEVICES := ruijie,rg-x60-pro
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += ruijie-rg-x60-pro
+
+define Device/ruijie-ew-6000gx-pro-stock
+  DEVICE_VENDOR := Ruijie
+  DEVICE_MODEL := Ruijie EW-6000GX Pro (Stock)
+  DEVICE_DTS := mt7986a-ruijie-ew-6000gx-pro-stock
+  DEVICE_DTS_CONFIG := config@ruijie_x60_gsw_en8811h_phy
+  DEVICE_DTS_DIR := ../dts
+  SUPPORTED_DEVICES := ruijie,ew-6000gx-pro-stock
+  DEVICE_PACKAGES := kmod-phy-airoha-en8811h
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += ruijie-ew-6000gx-pro-stock
+
+define Device/ruijie-ew-6000gx-pro
+  DEVICE_VENDOR := Ruijie
+  DEVICE_MODEL := Ruijie EW-6000GX Pro
+  DEVICE_DTS := mt7986a-ruijie-ew-6000gx-pro
+  DEVICE_DTS_CONFIG := config@ruijie_x60_gsw_en8811h_phy
+  DEVICE_DTS_DIR := ../dts
+  SUPPORTED_DEVICES := ruijie,ew-6000gx-pro
+  DEVICE_PACKAGES := kmod-phy-airoha-en8811h
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += ruijie-ew-6000gx-pro
+
+define Device/ruijie_rg-x30e-stock
+  DEVICE_VENDOR := Ruijie
+  DEVICE_MODEL := Ruijie RG-X30E (stock layout)
+  DEVICE_DTS := mt7981b-ruijie-rg-x30e-stock
+  DEVICE_DTS_DIR := ../dts
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  IMAGE_SIZE := 114688k
+  KERNEL_IN_UBI := 1
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += ruijie_rg-x30e-stock
+
+define Device/ruijie_rg-x30e-firmware2
+  DEVICE_VENDOR := Ruijie
+  DEVICE_MODEL := Ruijie RG-X30E (firmware2 layout)
+  DEVICE_DTS := mt7981b-ruijie-rg-x30e-firmware2
+  DEVICE_DTS_DIR := ../dts
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  IMAGE_SIZE := 114688k
+  KERNEL_IN_UBI := 1
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += ruijie_rg-x30e-firmware2
+
+define Device/ruijie_rg-x30e
+  DEVICE_VENDOR := Ruijie
+  DEVICE_MODEL := Ruijie RG-X30E
+  DEVICE_DTS := mt7981b-ruijie-rg-x30e
+  DEVICE_DTS_DIR := ../dts
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  IMAGE_SIZE := 114688k
+  KERNEL_IN_UBI := 1
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += ruijie_rg-x30e
+
+define Device/ruijie_rg-x30e-pro-stock
+  DEVICE_VENDOR := Ruijie
+  DEVICE_MODEL := Ruijie RG-X30E Pro (stock layout)
+  DEVICE_DTS := mt7981b-ruijie-rg-x30e-pro-stock
+  DEVICE_DTS_DIR := ../dts
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  IMAGE_SIZE := 114688k
+  KERNEL_IN_UBI := 1
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += ruijie_rg-x30e-pro-stock
+
+define Device/ruijie_rg-x30e-pro-firmware2
+  DEVICE_VENDOR := Ruijie
+  DEVICE_MODEL := Ruijie RG-X30E Pro (firmware2 layout)
+  DEVICE_DTS := mt7981b-ruijie-rg-x30e-pro-firmware2
+  DEVICE_DTS_DIR := ../dts
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  IMAGE_SIZE := 114688k
+  KERNEL_IN_UBI := 1
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += ruijie_rg-x30e-pro-firmware2
+
+define Device/ruijie_rg-x30e-pro
+  DEVICE_VENDOR := Ruijie
+  DEVICE_MODEL := Ruijie RG-X30E Pro
+  DEVICE_DTS := mt7981b-ruijie-rg-x30e-pro
+  DEVICE_DTS_DIR := ../dts
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  IMAGE_SIZE := 114688k
+  KERNEL_IN_UBI := 1
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += ruijie_rg-x30e-pro
+
 define Device/abt_asr3000
   DEVICE_VENDOR := ABT
   DEVICE_MODEL := ASR3000
@@ -1754,16 +1894,6 @@ define Device/yvr_x6
   IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
 endef
 TARGET_DEVICES += yvr_x6
-
-define Device/ruijie_rg-x60-pro
-  DEVICE_VENDOR := Ruijie
-  DEVICE_MODEL := RG-X60 Pro
-  DEVICE_DTS := mt7986a-ruijie-rg-x60-pro
-  DEVICE_DTS_DIR := ../dts
-  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7986-firmware mt7986-wo-firmware
-  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
-endef
-TARGET_DEVICES += ruijie_rg-x60-pro
 
 define Device/sl_3000-emmc
   DEVICE_VENDOR := SL

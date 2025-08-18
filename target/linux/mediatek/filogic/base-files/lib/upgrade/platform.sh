@@ -66,12 +66,12 @@ platform_do_upgrade() {
 	local board=$(board_name)
 
 	case "$board" in
-        qihoo,360t7)
+    qihoo,360t7)
 		CI_UBIPART="ubi"
-    		CI_KERNPART="kernel"
-      		CI_ROOTPART="rootfs"
-    		nand_do_upgrade "$1"
-    		;;
+    	CI_KERNPART="kernel"
+      	CI_ROOTPART="rootfs"
+    	nand_do_upgrade "$1"
+    	;;
 	abt,asr3000|\
 	bananapi,bpi-r3|\
 	bananapi,bpi-r3-mini|\
@@ -215,6 +215,19 @@ platform_check_image() {
 		}
 		return 0
 		;;
+	ruijie,rg-x30e*|\
+	ruijie,rg-x60-pro*|\
+	ruijie,ew-6000gx-pro*)
+		# tar magic `ustar`
+		magic="$(dd if="$1" bs=1 skip=257 count=5 2>/dev/null)"
+
+		[ "$magic" != "ustar" ] && {
+			echo "Invalid image type."
+			return 1
+		}
+
+		return 0
+	;;
 	*)
 		nand_do_platform_check "$board" "$1"
 		return $?

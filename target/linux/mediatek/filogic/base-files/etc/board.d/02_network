@@ -55,15 +55,17 @@ mediatek_setup_interfaces()
 	qihoo,360t7|\
 	sl,3000-emmc|\
 	routerich,ax3000|\
-	routerich,ax3000-ubootmod)
+	routerich,ax3000-ubootmod|\
+	ruijie,rg-x30e*)
 		ucidef_set_interfaces_lan_wan "lan1 lan2 lan3" wan
 		;;
 	asus,tuf-ax4200|\
 	jdcloud,re-cp-03|\
+	ruijie,ew-6000gx-pro*|\
+	ruijie,rg-x60-pro*|\
 	mediatek,mt7981-rfb|\
 	netcore,n60|\
 	netcore,n60-pro|\
-	ruijie,rg-x60-pro|\
 	unielec,u7981-01*|\
 	zbtlink,zbt-z8102ax|\
 	zyxel,ex5601-t0-stock|\
@@ -215,10 +217,22 @@ mediatek_setup_macs()
 		wan_mac=$(macaddr_add "$lan_mac" 1)
 		label_mac=$wan_mac
 		;;
-	ruijie,rg-x60-pro)
+	ruijie,rg-x30e*|\
+	ruijie,ew-6000gx-pro*|\
+	ruijie,rg-x60-pro*)
 		label_mac=$(mtd_get_mac_ascii product_info ethaddr)
 		wan_mac=$label_mac
 		lan_mac=$(macaddr_add "$label_mac" 1)
+		local b0dat="$(l1dat if2dat ra0)"
+		local b1dat="$(l1dat if2dat rax0)"
+		if [ -f ${b0dat} ] && ! grep -q "MacAddress=" ${b0dat}; then
+			local b0mac="$(macaddr_add $label_mac 2)"
+			echo "MacAddress=$b0mac" >> ${b0dat}
+		fi
+		if [ -f ${b1dat} ] && ! grep -q "MacAddress=" ${b1dat}; then
+			local b1mac="$(macaddr_add $label_mac 3)"
+			echo "MacAddress=$b1mac" >> ${b1dat}
+		fi
 		;;
 	yvr,x6)
 		wan_mac=$(mtd_get_mac_ascii Factory_info MAC)
@@ -256,18 +270,7 @@ mediatek_setup_macs()
 		wan_mac=$(macaddr_add "$label_mac" 1)
 		;;
 	esac
-		
-	wifi_mac=$(macaddr_add $(cat /sys/class/net/eth0/address) 3)
-        sed -i '/MacAddress=$wifi_mac/d' /etc/wireless/mediatek/mt7981.dbdc.b0.dat
-        echo "MacAddress=$wifi_mac" >> /etc/wireless/mediatek/mt7981.dbdc.b0.dat
-        wifi_mac=$(macaddr_add $(cat /sys/class/net/eth0/address) 4)
-        sed -i '/MacAddress=$wifi_mac/d' /etc/wireless/mediatek/mt7981.dbdc.b1.dat
-        echo "MacAddress=$wifi_mac" >> /etc/wireless/mediatek/mt7981.dbdc.b1.dat
-	sed -i '/MacAddress=$wifi_mac/d' /etc/wireless/mediatek/mt7986-ax60000.dbdc.b0.dat
-        echo "MacAddress=$wifi_mac" >> /etc/wireless/mediatek/mt7986-ax6000.dbdc.b0.dat
-	wifi_mac="$(macaddr_add $wifi_mac 1)"
-        sed -i '/MacAddress=$wifi_mac/d' /etc/wireless/mediatek/mt7986-ax6000.dbdc.b1.dat
-        echo "MacAddress=$wifi_mac" >> /etc/wireless/mediatek/mt7986-ax6000.dbdc.b1.dat
+
 	[ -n "$lan_mac" ] && ucidef_set_interface_macaddr "lan" $lan_mac
 	[ -n "$wan_mac" ] && ucidef_set_interface_macaddr "wan" $wan_mac
 	[ -n "$label_mac" ] && ucidef_set_label_macaddr $label_mac
