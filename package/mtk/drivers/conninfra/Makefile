@@ -9,7 +9,13 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=conninfra
-PKG_VERSION:=bbf588
+PKG_VERSION:=7.6.7.2
+
+PKG_SOURCE_VERSION:=20231229-f2fa25
+PKG_SOURCE:=mt79xx_$(PKG_NAME)_$(PKG_SOURCE_VERSION).tar.xz
+PKG_SOURCE_URL:=https://github.com/RuijieNetworksCommunity/mt79xx-$(PKG_NAME)-collections/releases/download/mt79xx_$(PKG_NAME)_$(PKG_SOURCE_VERSION)
+PKG_HASH:=672929de84ff2828ab8caef7ae56b6b3aac91210d5700c568559ebfa2d3cd176
+
 PKG_BUILD_DIR:=$(KERNEL_BUILD_DIR)/$(PKG_NAME)
 PKG_MAINTAINER:=Kun-Ze Syue<kun-ze.syue@mediatek.com>
 

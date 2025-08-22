@@ -36,6 +36,4 @@ git-src
 .ccache
 .vscode*
 
-!/dl/datconf*
-!/dl/mt79*
-!/dl/warp*
+

@@ -32,20 +32,105 @@ config WARP_MEMORY_LEAK_DBG
 	depends on !MTK_MEMORY_SHRINK && WARP_DBG_SUPPORT
 	default y
 
-config WARP_CHIPSET
-	string "WARP target chipset"
-	default mt7988
+choice
+	prompt "WARP target chipset"
+	default MTK_WARP_CHIPSET_MT7988
 	help
-	For colgin: colgin, for panther: mt7986, for jaguar: mt7988
+		For colgin: colgin, for panther: mt7986, for jaguar: mt7988
+
+	config MTK_WARP_CHIPSET_MT7916
+		bool "MT7916"
+	
+	config MTK_WARP_CHIPSET_MT7981
+		bool "MT7981"
+	
+	config MTK_WARP_CHIPSET_MT7986
+		bool "MT7986"
+
+	config MTK_WARP_CHIPSET_MT7988
+		bool "MT7988"
+
+endchoice
+
+config WARP_CHIPSET
+	string
+	default mt7916 if MTK_WARP_CHIPSET_MT7916
+	default mt7981 if MTK_WARP_CHIPSET_MT7981
+	default mt7986 if MTK_WARP_CHIPSET_MT7986
+	default mt7988 if MTK_WARP_CHIPSET_MT7988
 
 config WARP_WO_EMBEDDED_LOAD
 	bool "Emebedded MCU firmware support"
 	default n
 	help
-	Once enabled, firmware download flow try embedded version once externel version being invalid.
+		Once enabled, firmware download flow try embedded version once externel version being invalid.
 
-config WARP_NEW_FW
-	bool "Use new warp firmware"
-	default n
+config MTK_WARP_FW_BIN_LOAD
+    depends on MTK_WARP_CHIPSET_MT7916 || MTK_WARP_CHIPSET_MT7981 || MTK_WARP_CHIPSET_MT7986
+    bool "Load WI-FI firmware with bin file"
+    default n
+
+choice
+	prompt "MT7981 custom WOCPU firmware"
+	depends on MTK_WARP_CHIPSET_MT7981 && MTK_WARP_FW_BIN_LOAD
+	default MTK_WARP_MT7981_DEFAULT_FIRMWARE
+
+	config MTK_WARP_MT7981_DEFAULT_FIRMWARE
+		bool "default firmware"
+
+	config MTK_WARP_MT7981_20230330
+		bool "mt7981-fw-20230330"
+
+	config MTK_WARP_MT7981_20230717
+		bool "mt7981-fw-20230717"
+
+	config MTK_WARP_MT7981_20231024
+		bool "mt7981-fw-20231024"
+
+	config MTK_WARP_MT7981_20231228
+		bool "mt7981-fw-20231228"
+
+	config MTK_WARP_MT7981_asus-ax57
+		bool "mt7981-fw-asus-ax57"
+
+endchoice
+
+choice
+	prompt "MT7986 custom WOCPU firmware"
+	depends on MTK_WARP_CHIPSET_MT7986 && MTK_WARP_FW_BIN_LOAD
+	default MTK_WARP_MT7986_DEFAULT_FIRMWARE
+
+	config MTK_WARP_MT7986_DEFAULT_FIRMWARE
+		bool "default firmware"
+
+	config MTK_WARP_MT7986_20230421
+		bool "mt7986-fw-20230421"
+
+	config MTK_WARP_MT7986_20230808
+		bool "mt7986-fw-20230808"
+
+	config MTK_WARP_MT7986_20231024
+		bool "mt7986-fw-20231024"
+
+	config MTK_WARP_MT7986_20231228
+		bool "mt7986-fw-20231228"
+
+endchoice
+
+config MTK_WARP_FIRMWARE_PATH_MT7981
+	string
+	default mt7981-fw-20230330 if MTK_MT_WIFI_MT7981_20230330
+	default mt7981-fw-20230717 if MTK_MT_WIFI_MT7981_20230717
+	default mt7981-fw-20231024 if MTK_MT_WIFI_MT7981_20231024
+	default mt7981-fw-20231228 if MTK_MT_WIFI_MT7981_20231228
+	default mt7981-fw-asus-ax57 if MTK_MT_WIFI_MT7981_asus-ax57
+
+config MTK_WARP_FIRMWARE_PATH_MT7986
+	string
+	default mt7986-fw-20230421 if MTK_MT_WIFI_MT7986_20230421
+	default mt7986-fw-20230808 if MTK_MT_WIFI_MT7986_20230808
+	default mt7986-fw-20231024 if MTK_MT_WIFI_MT7986_20231024
+	default mt7986-fw-20231228 if MTK_MT_WIFI_MT7986_20231228
+
 endif
 
