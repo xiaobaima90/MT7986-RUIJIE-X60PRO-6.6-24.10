@@ -8,8 +8,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=datconf
-PKG_REVISION:=6bb733f7
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_REVISION).tar.bz2
+PKG_VERSION:=7.6.7.2
+
+PKG_SOURCE_VERSION:=20231229-757f9679
+PKG_SOURCE:=mt79xx_$(PKG_NAME)_$(PKG_SOURCE_VERSION).tar.bz2
+PKG_SOURCE_URL:=https://github.com/RuijieNetworksCommunity/mt79xx-$(PKG_NAME)-collections/releases/download/mt79xx_$(PKG_NAME)_$(PKG_SOURCE_VERSION)
+PKG_HASH:=3cbb7489e3df1be52d184b600129a6081e7225981acdbcc5c2cb7149f11c37f1
+
 PKG_RELEASE:=1
 PKG_USE_NINJA:=0
 
