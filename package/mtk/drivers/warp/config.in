@@ -7,17 +7,9 @@ config WARP_VERSION
 	default 2 if TARGET_mediatek_mt7986
 	default 3 if TARGET_mediatek_mt7988
 
-config WARP_ATC_SUPPORT
-	bool "WARP Driver Address Translate Support for CR mirror"
-	default n
-
 config WARP_DBG_SUPPORT
 	bool "WARP Driver Debug Info Support"
 	default y
-
-config WARP_WDMA_RECYCLE_SUPPORT
-	bool "WARP WDMA Recycle Support"
-	default n
 
 config WED_HW_RRO_SUPPORT
 	bool "WED HW RRO Support"
@@ -67,7 +59,7 @@ config WARP_WO_EMBEDDED_LOAD
 
 config MTK_WARP_FW_BIN_LOAD
     depends on MTK_WARP_CHIPSET_MT7916 || MTK_WARP_CHIPSET_MT7981 || MTK_WARP_CHIPSET_MT7986
-    bool "Load WI-FI firmware with bin file"
+    bool "Load WIFI FW With BIN File"
     default n
 
 choice

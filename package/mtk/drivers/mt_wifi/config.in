@@ -881,7 +881,7 @@ endchoice
 
 config MTK_WIFI_FW_BIN_LOAD
     depends on MTK_CHIP_MT7986 || MTK_CHIP_MT7916 || MTK_CHIP_MT7981
-    bool "Load WI-FI firmware with bin file"
+    bool "Load WIFI FW With BIN File"
     default n
 
 config MTK_WIFI_SKU_TYPE
