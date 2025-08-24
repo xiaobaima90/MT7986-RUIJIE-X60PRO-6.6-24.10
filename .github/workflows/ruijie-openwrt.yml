@@ -11,7 +11,6 @@ env:
   UPLOAD_BIN_DIR: true
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
-  CACHE_TOOLCHAIN: true
   TZ: Asia/Shanghai
 
 jobs:
@@ -73,11 +72,23 @@ jobs:
       id: checkout
       uses: actions/checkout@main
 
-    - name: Cache Toolchain
-      if: env.CACHE_TOOLCHAIN == 'true'
-      uses: HiGarfield/cachewrtbuild@main
+    - name: Cache DL
+      uses: actions/cache@v4
       with:
-        ccache: false
+        path: dl
+        key: mt798x-dl-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+
+    - name: Cache Feeds
+      uses: actions/cache@v4
+      with:
+        path: |
+          feeds
+          packages/feeds
+        key: mt798x-feeds-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+
+    - name: Cache Toolchain
+      uses: RuijieNetworksCommunity/cache-wrt-toolchain@main
+      with:
         mixkey: ${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Update Feeds
@@ -171,11 +182,23 @@ jobs:
       id: checkout
       uses: actions/checkout@main
 
-    - name: Cache Toolchain
-      if: env.CACHE_TOOLCHAIN == 'true'
-      uses: HiGarfield/cachewrtbuild@main
+    - name: Cache DL
+      uses: actions/cache@v4
       with:
-        ccache: false
+        path: dl
+        key: mt798x-dl-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+
+    - name: Cache Feeds
+      uses: actions/cache@v4
+      with:
+        path: |
+          feeds
+          packages/feeds
+        key: mt798x-feeds-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+
+    - name: Cache Toolchain
+      uses: RuijieNetworksCommunity/cache-wrt-toolchain@main
+      with:
         mixkey: ${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Update Feeds
@@ -280,11 +303,23 @@ jobs:
       id: checkout
       uses: actions/checkout@main
 
-    - name: Cache Toolchain
-      if: env.CACHE_TOOLCHAIN == 'true'
-      uses: HiGarfield/cachewrtbuild@main
+    - name: Cache DL
+      uses: actions/cache@v4
       with:
-        ccache: false
+        path: dl
+        key: mt798x-dl-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+
+    - name: Cache Feeds
+      uses: actions/cache@v4
+      with:
+        path: |
+          feeds
+          packages/feeds
+        key: mt798x-feeds-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+
+    - name: Cache Toolchain
+      uses: RuijieNetworksCommunity/cache-wrt-toolchain@main
+      with:
         mixkey: ${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Update Feeds
@@ -343,7 +378,7 @@ jobs:
 
     - name: Download MT7981 Lite Artifacts
       id: download-mt7981
-      if: needs.mt7981-lite.outputs.compile == 'success' && !cancelled()
+      if: (!cancelled())
       uses: actions/download-artifact@main
       with:
         name: mt7981-lite-bin
@@ -351,7 +386,7 @@ jobs:
 
     - name: Download MT7986 Lite Artifacts
       id: download-mt7986
-      if: needs.mt7986-lite.outputs.compile == 'success' && !cancelled()
+      if: (!cancelled())
       uses: actions/download-artifact@main
       with:
         name: mt7986-lite-bin
@@ -368,13 +403,13 @@ jobs:
 
         find artifacts/mt7981/targets/mediatek/filogic/ -type f ! -name "*.bin" -delete
         find artifacts/mt7981/targets/mediatek/filogic/ -type f -name "*-bl2.bin" -delete
-        find artifacts/mt7981/targets/mediatek/filogic/ -type d -not -path . -exec rm -rf {} +
+        find artifacts/mt7981/targets/mediatek/filogic/ -mindepth 1 -type d -exec rm -rf {} +
         find artifacts/mt7986/targets/mediatek/filogic/ -type f ! -name "*.bin" -delete
         find artifacts/mt7986/targets/mediatek/filogic/ -type f -name "*-bl2.bin" -delete
-        find artifacts/mt7986/targets/mediatek/filogic/ -type d -not -path . -exec rm -rf {} +
+        find artifacts/mt7986/targets/mediatek/filogic/ -mindepth 1 -type d -exec rm -rf {} +
 
-        cp -r artifacts/mt7981/targets/mediatek/filogic/*.bin release/ || true
-        cp -r artifacts/mt7986/targets/mediatek/filogic/*.bin release/ || true
+        cp -r artifacts/mt7981/targets/mediatek/filogic/*.bin release/
+        cp -r artifacts/mt7986/targets/mediatek/filogic/*.bin release/
 
         cd release
 
@@ -470,11 +505,23 @@ jobs:
       id: checkout
       uses: actions/checkout@main
 
-    - name: Cache Toolchain
-      if: env.CACHE_TOOLCHAIN == 'true'
-      uses: HiGarfield/cachewrtbuild@main
+    - name: Cache DL
+      uses: actions/cache@v4
       with:
-        ccache: false
+        path: dl
+        key: mt798x-dl-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+
+    - name: Cache Feeds
+      uses: actions/cache@v4
+      with:
+        path: |
+          feeds
+          packages/feeds
+        key: mt798x-feeds-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+
+    - name: Cache Toolchain
+      uses: RuijieNetworksCommunity/cache-wrt-toolchain@main
+      with:
         mixkey: ${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Update Feeds
@@ -580,11 +627,23 @@ jobs:
       id: checkout
       uses: actions/checkout@main
 
-    - name: Cache Toolchain
-      if: env.CACHE_TOOLCHAIN == 'true'
-      uses: HiGarfield/cachewrtbuild@main
+    - name: Cache DL
+      uses: actions/cache@v4
       with:
-        ccache: false
+        path: dl
+        key: mt798x-dl-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+
+    - name: Cache Feeds
+      uses: actions/cache@v4
+      with:
+        path: |
+          feeds
+          packages/feeds
+        key: mt798x-feeds-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+
+    - name: Cache Toolchain
+      uses: RuijieNetworksCommunity/cache-wrt-toolchain@main
+      with:
         mixkey: ${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Update Feeds
@@ -641,20 +700,20 @@ jobs:
       with:
         fetch-depth: 2
 
-    - name: Download MT7981 Lite Artifacts
+    - name: Download MT7981 Max Artifacts
       id: download-mt7981
-      if: needs.mt7981-lite.outputs.compile == 'success' && !cancelled()
+      if: (!cancelled())
       uses: actions/download-artifact@main
       with:
-        name: mt7981-bin
+        name: mt7981-max-bin
         path: artifacts/mt7981
 
-    - name: Download MT7986 Lite Artifacts
+    - name: Download MT7986 Max Artifacts
       id: download-mt7986
-      if: needs.mt7986-lite.outputs.compile == 'success' && !cancelled()
+      if: (!cancelled())
       uses: actions/download-artifact@main
       with:
-        name: mt7986-bin
+        name: mt7986-max-bin
         path: artifacts/mt7986
 
     - name: Organize Files
@@ -668,13 +727,13 @@ jobs:
 
         find artifacts/mt7981/targets/mediatek/filogic/ -type f ! -name "*.bin" -delete
         find artifacts/mt7981/targets/mediatek/filogic/ -type f -name "*-bl2.bin" -delete
-        find artifacts/mt7981/targets/mediatek/filogic/ -type d -not -path . -exec rm -rf {} +
+        find artifacts/mt7981/targets/mediatek/filogic/ -mindepth 1 -type d -exec rm -rf {} +
         find artifacts/mt7986/targets/mediatek/filogic/ -type f ! -name "*.bin" -delete
         find artifacts/mt7986/targets/mediatek/filogic/ -type f -name "*-bl2.bin" -delete
-        find artifacts/mt7986/targets/mediatek/filogic/ -type d -not -path . -exec rm -rf {} +
+        find artifacts/mt7986/targets/mediatek/filogic/ -mindepth 1 -type d -exec rm -rf {} +
 
-        cp -r artifacts/mt7981/targets/mediatek/filogic/*.bin release/ || true
-        cp -r artifacts/mt7986/targets/mediatek/filogic/*.bin release/ || true
+        cp -r artifacts/mt7981/targets/mediatek/filogic/*.bin release/
+        cp -r artifacts/mt7986/targets/mediatek/filogic/*.bin release/
 
         cd release
 
