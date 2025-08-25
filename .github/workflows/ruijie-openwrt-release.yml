@@ -12,6 +12,9 @@ env:
 
 jobs:
   postmsg:
+    name: Post Group Messages
+    runs-on: ubuntu-22.04
+    steps:
     - name: Send Messages
       id: request
       uses: tyrrrz/action-http-request@master
@@ -103,9 +106,7 @@ jobs:
     - name: Cache Feeds
       uses: actions/cache@v4
       with:
-        path: |
-          feeds
-          packages/feeds
+        path: feeds
         key: mt798x-feeds-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Cache Toolchain
@@ -213,9 +214,7 @@ jobs:
     - name: Cache Feeds
       uses: actions/cache@v4
       with:
-        path: |
-          feeds
-          packages/feeds
+        path: feeds
         key: mt798x-feeds-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Cache Toolchain
@@ -334,9 +333,7 @@ jobs:
     - name: Cache Feeds
       uses: actions/cache@v4
       with:
-        path: |
-          feeds
-          packages/feeds
+        path: feeds
         key: mt798x-feeds-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Cache Toolchain
@@ -533,9 +530,7 @@ jobs:
     - name: Cache Feeds
       uses: actions/cache@v4
       with:
-        path: |
-          feeds
-          packages/feeds
+        path: feeds
         key: mt798x-feeds-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Cache Toolchain
@@ -654,9 +649,7 @@ jobs:
     - name: Cache Feeds
       uses: actions/cache@v4
       with:
-        path: |
-          feeds
-          packages/feeds
+        path: feeds
         key: mt798x-feeds-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Cache Toolchain
