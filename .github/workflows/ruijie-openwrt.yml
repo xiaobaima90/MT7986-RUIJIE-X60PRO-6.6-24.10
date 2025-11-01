@@ -481,6 +481,7 @@ jobs:
 
   mt7981-max:
     name: MT7981 Max Build
+    if: false
     runs-on: ubuntu-22.04
     needs: [cache-toolchain]
     steps:
@@ -600,6 +601,7 @@ jobs:
 
   mt7986-max:
     name: MT7986 Max Build
+    if: false
     runs-on: ubuntu-22.04
     needs: [cache-toolchain]
     steps:
