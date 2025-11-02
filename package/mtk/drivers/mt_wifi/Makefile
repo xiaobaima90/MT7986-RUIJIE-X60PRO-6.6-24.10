@@ -12,8 +12,6 @@ ifeq ($(CONFIG_MTK_CHIP_MT7981),y)
 	PKG_SUFFIX:=mt7981
 else ifeq ($(CONFIG_MTK_CHIP_MT7986),y)
 	PKG_SUFFIX:=mt7986
-else
-	$(error Error: UNKNOW MTK_CHIP)
 endif
 
 ifeq ($(CONFIG_MTK_MT_WIFI_DRIVER_VERSION_7661),y)
