@@ -16,7 +16,7 @@ env:
 jobs:
   postmsg:
     name: Post Group Messages
-    if: false
+    if: true
     runs-on: ubuntu-22.04
     steps:
     - name: Checkout
