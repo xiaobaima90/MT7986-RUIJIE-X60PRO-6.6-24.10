@@ -73,11 +73,6 @@ mediatek_setup_interfaces()
 	zyxel,ex5601-t0-ubootmod)
 		ucidef_set_interfaces_lan_wan "lan1 lan2 lan3 lan4" eth1
 		;;
-	ruijie,rg-be72-pro*)
-		ucidef_set_interfaces_lan_wan "lan1 lan2 lan3 lan4 eth2.2 eth1" eth2.1
-		ucidef_add_switch "switch0" \
-					"0@eth2" "1:wan" "2:lan" "3:lan" "4:lan"
-		;;
 	asus,tuf-ax6000|\
 	glinet,gl-mt6000|\
 	tplink,tl-xdr4288|\
@@ -231,7 +226,6 @@ mediatek_setup_macs()
 		;;
 	ruijie,rg-x30e*|\
 	ruijie,ew-6000gx-pro*|\
-	ruijie,rg-be72-pro*|\
 	ruijie,rg-x60-pro*)
 		label_mac=$(mtd_get_mac_ascii product_info ethaddr)
 		wan_mac=$label_mac
