@@ -123,6 +123,7 @@ platform_do_upgrade() {
 	huasifei,wh3000-emmc|\
 	*Airpi*|\
 	cmcc,rax3000m-emmc|\
+	cmcc,rax3000z-emmc|\
 	cmcc,xr30-emmc|\
 	sl,3000-emmc|\
 	smartrg,sdg-8612|\
@@ -255,6 +256,7 @@ platform_copy_config() {
 	glinet,gl-xe3000|\
 	huasifei,wh3000-emmc|\
 	cmcc,rax3000m-emmc|\
+	cmcc,rax3000z-emmc|\
 	cmcc,xr30-emmc|\
 	clx,s20l|\
 	clx,s20p|\
