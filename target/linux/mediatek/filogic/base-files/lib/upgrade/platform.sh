@@ -91,6 +91,8 @@ platform_do_upgrade() {
 	cmcc,rax3000m|\
 	cmcc,rax3000m-nand|\
 	cmcc,rax3000me|\
+	clx,s20p|\
+	clx,s20l|\
 	cudy,tr3000-v1-ubootmod|\
 	gatonetworks,gdsp|\
 	imou,lc-hx3001|\
@@ -252,6 +254,8 @@ platform_copy_config() {
 	glinet,gl-xe3000|\
 	huasifei,wh3000-emmc|\
 	cmcc,rax3000m-emmc|\
+	clx,s20l|\
+	clx,s20p|\
 	jdcloud,re-cp-03|\
 	sl,3000-emmc|\
 	smartrg,sdg-8612|\
