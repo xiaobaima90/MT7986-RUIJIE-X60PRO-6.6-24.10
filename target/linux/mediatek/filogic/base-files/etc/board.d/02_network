@@ -55,6 +55,7 @@ mediatek_setup_interfaces()
 	livinet,zr-3020|\
 	livinet,zr-3020-ubootmod|\
 	qihoo,360t7|\
+	*philips,hy3000*|\
 	sl,3000-emmc|\
 	routerich,ax3000|\
 	routerich,ax3000-ubootmod|\
@@ -188,7 +189,8 @@ mediatek_setup_macs()
 	local lan_mac=""
 	local wan_mac=""
 	local label_mac=""
-	local wifi_mac=""
+	local b0dat="$(l1dat if2dat ra0)"
+	local b1dat="$(l1dat if2dat rax0)"
 	case $board in
 	acer,predator-w6|\
 	acer,predator-w6d|\
@@ -258,6 +260,11 @@ mediatek_setup_macs()
  		wan_mac=$(macaddr_add "$lan_mac" -2)
  		label_mac=$lan_mac
  		;;
+	philips,hy3000)
+		lan_mac=$(mmc_get_mac_binary factory 0x74)
+		wan_mac=$(macaddr factory $lan_mac 1)
+		label_mac=$wan_mac
+		;;
 	xiaomi,mi-router-ax3000t|\
 	xiaomi,mi-router-ax3000t-mtkuboot|\
 	xiaomi,mi-router-ax3000t-ubootmod|\
@@ -291,6 +298,25 @@ mediatek_setup_macs()
 		wan_mac=$(macaddr_add $label_mac -1)
 		;;
 	esac
+
+	if [ -n "$label_mac" ]; then
+		base_mac="$label_mac"
+	elif [ -n "$wan_mac" ]; then
+		base_mac="$wan_mac"
+	elif [ -n "$lan_mac" ]; then
+		base_mac="$lan_mac"
+	else
+		base_mac=$(cat /sys/class/net/eth0/address)
+	fi
+
+	if [ -f ${b0dat} ] && ! grep -q "MacAddress=" ${b0dat}; then
+			local b0mac="$(macaddr_add "$base_mac" 3)"
+			echo "MacAddress=$b0mac" >> ${b0dat}
+		fi
+	if [ -f ${b1dat} ] && ! grep -q "MacAddress=" ${b1dat}; then
+			local b1mac="$(macaddr_add "$base_mac" 4)"
+			echo "MacAddress=$b1mac" >> ${b1dat}
+	fi
 
 	[ -n "$lan_mac" ] && ucidef_set_interface_macaddr "lan" $lan_mac
 	[ -n "$wan_mac" ] && ucidef_set_interface_macaddr "wan" $wan_mac

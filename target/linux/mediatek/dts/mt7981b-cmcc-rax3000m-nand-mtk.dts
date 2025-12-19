@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 
 /dts-v1/;
-#include "mt7981b-cmcc-rax3000m-mod.dtsi"
+#include "mt7981b-cmcc-rax3000m-mtk-base.dtsi"
 
 / {
-	model = "CMCC RAX3000M NAND (UBoot mod)";
+	model = "CMCC RAX3000M NAND (MTK UBoot)";
 	compatible = "cmcc,rax3000m-nand", "mediatek,mt7981";
 
 	aliases {

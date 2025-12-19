@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 
 /dts-v1/;
-#include "mt7981b-cmcc-rax3000m-mod.dtsi"
+#include "mt7981b-cmcc-rax3000m-mtk-base.dtsi"
 
 / {
-	model = "CMCC RAX3000M eMMC (UBoot mod)";
+	model = "CMCC RAX3000M eMMC (MTK UBoot)";
 	compatible = "cmcc,rax3000m-emmc", "mediatek,mt7981";
 
 	chosen {
@@ -14,9 +14,8 @@
 
 &mmc0 {
 	bus-width = <8>;
-	max-frequency = <26000000>;
-	no-sd;
-	no-sdio;
+	cap-mmc-highspeed;
+	max-frequency = <52000000>;
 	non-removable;
 	pinctrl-names = "default", "state_uhs";
 	pinctrl-0 = <&mmc0_pins_default>;
@@ -25,8 +24,8 @@
 	status = "okay";
 
 	card@0 {
-	compatible = "mmc-card";
-	reg = <0>;
+		compatible = "mmc-card";
+		reg = <0>;
 
 		block {
 			compatible = "block-device";

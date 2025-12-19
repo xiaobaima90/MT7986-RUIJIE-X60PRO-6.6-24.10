@@ -739,6 +739,30 @@ define Device/cmcc_a10-ubootmod
 endef
 TARGET_DEVICES += cmcc_a10-ubootmod
 
+define Device/clx_s20p
+  DEVICE_VENDOR := CLX
+  DEVICE_MODEL := S20P
+  DEVICE_DTS := mt7986a-clx-s20p
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7986-firmware mt7986-wo-firmware kmod-usb3 automount
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += clx_s20p
+
+define Device/philips_hy3000
+  DEVICE_VENDOR := Philips
+  DEVICE_MODEL := HY3000
+  DEVICE_DTS := mt7981b-philips-hy3000
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-usb3 f2fsck mkf2fs
+  SUPPORTED_DEVICES += philips,hy3000
+  KERNEL := kernel-bin | lzma | fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb
+  KERNEL_INITRAMFS := kernel-bin | lzma | \
+        fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd | pad-to 64k
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += philips_hy3000
+
 define Device/cmcc_rax3000m_common
   DEVICE_DTS_OVERLAY := mt7981b-cmcc-rax3000m-nand
   DEVICE_DTS_DIR := ../dts
@@ -760,10 +784,11 @@ define Device/cmcc_rax3000m_common
 	pad-rootfs | append-metadata
 endef
 
-define Device/cmcc_rax3000m-emmc
+define Device/cmcc_rax3000m-emmc-mtk
   DEVICE_VENDOR := CMCC
-  DEVICE_MODEL := RAX3000M (eMMC version)
-  DEVICE_DTS := mt7981b-cmcc-rax3000m-emmc
+  DEVICE_MODEL := RAX3000M EMMC
+  DEVICE_VARIANT := (MTK layout)
+  DEVICE_DTS := mt7981b-cmcc-rax3000m-emmc-mtk
   DEVICE_DTS_DIR := ../dts
   DEVICE_PACKAGES := kmod-usb3 f2fsck mkf2fs
   SUPPORTED_DEVICES += cmcc,rax3000m-emmc
@@ -772,7 +797,21 @@ define Device/cmcc_rax3000m-emmc
 	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd | pad-to 64k
   IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
 endef
-TARGET_DEVICES += cmcc_rax3000m-emmc
+TARGET_DEVICES += cmcc_rax3000m-emmc-mtk
+
+define Device/cmcc_rax3000m-nand-mtk
+  DEVICE_VENDOR := CMCC
+  DEVICE_MODEL := RAX3000M NAND
+  DEVICE_VARIANT := (MTK layout)
+  DEVICE_DTS := mt7981b-cmcc-rax3000m-nand-mtk
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-usb3 f2fsck mkf2fs
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  IMAGE_SIZE := 116736k
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += cmcc_rax3000m-nand-mtk
 
 define Device/cmcc_rax3000m
   DEVICE_VENDOR := CMCC
@@ -784,56 +823,6 @@ define Device/cmcc_rax3000m
   ARTIFACT/nand-bl31-uboot.fip := mt7981-bl31-uboot cmcc_rax3000m-nand
 endef
 TARGET_DEVICES += cmcc_rax3000m
-
-define Device/cmcc_rax3000m-stock
-  DEVICE_VENDOR := CMCC
-  DEVICE_MODEL := RAX3000M NAND
-  DEVICE_VARIANT := (H layout)
-  DEVICE_DTS := mt7981b-cmcc-rax3000m-stock
-  DEVICE_DTS_DIR := ../dts
-  DEVICE_PACKAGES := kmod-usb3 f2fsck mkf2fs
-  BLOCKSIZE := 128k
-  PAGESIZE := 2048
-  IMAGE_SIZE := 116736k
-  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
-endef
-TARGET_DEVICES += cmcc_rax3000m-stock
-
-define Device/cmcc_rax3000m-nand-mod
-  DEVICE_VENDOR := CMCC
-  DEVICE_MODEL := RAX3000M (NAND Uboot Mod)
-  DEVICE_DTS := mt7981b-cmcc-rax3000m-nand-mod
-  DEVICE_DTS_DIR := ../dts
-  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware kmod-usb3 \
-	automount f2fsck mkf2fs
-  UBINIZE_OPTS := -E 5
-  BLOCKSIZE := 128k
-  PAGESIZE := 2048
-  IMAGE_SIZE := 116736k
-  KERNEL_IN_UBI := 1
-  IMAGES += factory.bin
-  IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
-  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
-  KERNEL = kernel-bin | lzma | \
-	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb
-  KERNEL_INITRAMFS = kernel-bin | lzma | \
-	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd
-endef
-TARGET_DEVICES += cmcc_rax3000m-nand-mod
-
-define Device/cmcc_rax3000m-emmc-mod
-  DEVICE_VENDOR := CMCC
-  DEVICE_MODEL := RAX3000M (eMMC Uboot Mod)
-  DEVICE_DTS := mt7981b-cmcc-rax3000m-emmc-mod
-  DEVICE_DTS_DIR := ../dts
-  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware kmod-usb3 \
-	automount f2fsck mkf2fs
-  KERNEL := kernel-bin | lzma | fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb
-  KERNEL_INITRAMFS := kernel-bin | lzma | \
-	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd | pad-to 64k
-  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
-endef
-TARGET_DEVICES += cmcc_rax3000m-emmc-mod
 
 define Device/cmcc_rax3000me
   DEVICE_VENDOR := CMCC
