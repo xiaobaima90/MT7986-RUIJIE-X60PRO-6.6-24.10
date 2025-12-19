@@ -114,7 +114,7 @@
 
 		port@0 {
 			reg = <0>;
-			label = "wan";
+			label = "unused";
 		};
 
 		port@1 {
@@ -127,9 +127,14 @@
 			label = "lan2";
 		};
 
+		port@3 {
+			reg = <3>;
+			label = "lan3";
+		};
+
 		port@4 {
 			reg = <4>;
-			label = "lan3";
+			label = "wan";
 		};
 
 		port@6 {
