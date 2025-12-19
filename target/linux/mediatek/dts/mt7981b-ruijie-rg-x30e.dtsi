@@ -88,14 +88,9 @@
 			pause;
 		};
 	};
-
-	mdio: mdio-bus {
-		#address-cells = <1>;
-		#size-cells = <0>;
-	};
 };
 
-&mdio {
+&mdio_bus {
 	switch: switch@1f {
 		compatible = "mediatek,mt7531";
 		reg = <31>;
