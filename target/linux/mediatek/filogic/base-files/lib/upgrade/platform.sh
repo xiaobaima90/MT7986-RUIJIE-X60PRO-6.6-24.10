@@ -94,6 +94,7 @@ platform_do_upgrade() {
 	clx,s20p|\
 	clx,s20l|\
 	cudy,tr3000-v1-ubootmod|\
+	cudy,wbr3000uax-v1-ubootmod|\
 	gatonetworks,gdsp|\
 	imou,lc-hx3001|\
 	konka,komi-a31|\
@@ -103,6 +104,7 @@ platform_do_upgrade() {
 	mediatek,mt7988a-rfb|\
 	mercusys,mr90x-v1-ubi|\
 	netis,nx31|\
+	netis,nx32u|\
 	nokia,ea0326gmp|\
 	openwrt,one|\
 	netcore,n60|\
@@ -122,6 +124,7 @@ platform_do_upgrade() {
 	glinet,gl-x3000|\
 	glinet,gl-xe3000|\
 	huasifei,wh3000-emmc|\
+	airpi,ap3000m|\
 	*Airpi*|\
 	cmcc,rax3000m-emmc|\
 	cmcc,rax3000z-emmc|\
@@ -247,6 +250,7 @@ platform_check_image() {
 
 platform_copy_config() {
 	case "$(board_name)" in
+	airpi,ap3000m|\
 	*Airpi*|\
 	acer,predator-w6|\
 	acer,predator-w6d|\
