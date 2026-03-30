@@ -32,7 +32,7 @@ jobs:
 
     - name: Send Messages
       id: request
-      uses: tyrrrz/action-http-request@master
+      uses: tyrrrz/action-http-request@prime
       with:
         url: https://api.1tip.cc:8000/qqbot/send_group_msg
         method: POST
