@@ -55,7 +55,7 @@ jobs:
         retry-delay: 500
 
     - name: Send Messages to Private Group
-      id: request
+      id: request-private
       uses: tyrrrz/action-http-request@prime
       with:
         url: https://api.1tip.cc:8000/qqbot/send_group_msg
