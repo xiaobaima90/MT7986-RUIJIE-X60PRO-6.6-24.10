@@ -61,6 +61,7 @@ mediatek_setup_interfaces()
 	qihoo,360t7|\
 	*philips,hy3000*|\
 	sl,3000-emmc|\
+	bt,r320|\
 	routerich,ax3000|\
 	routerich,ax3000-ubootmod|\
 	ruijie,rg-x30e*)
