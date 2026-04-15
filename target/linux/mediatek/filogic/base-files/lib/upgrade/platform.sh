@@ -227,7 +227,7 @@ platform_check_image() {
 		return 0
 		;;
 	ruijie,rg-x30e*|\
-	ruijie,rg-x60-pro*|\
+	ruijie,rg-x60*|\
 	ruijie,ew-6000gx-pro*)
 		# tar magic `ustar`
 		magic="$(dd if="$1" bs=1 skip=257 count=5 2>/dev/null)"

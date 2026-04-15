@@ -149,6 +149,30 @@ define Device/ruijie-ew-6000gx-pro
 endef
 TARGET_DEVICES += ruijie-ew-6000gx-pro
 
+define Device/ruijie-rg-x60-stock
+  DEVICE_VENDOR := Ruijie
+  DEVICE_MODEL := Ruijie RG-X60 (Stock)
+  DEVICE_DTS := mt7986a-ruijie-rg-x60-stock
+  DEVICE_DTS_CONFIG := config@ruijie_x60_gsw_en8811h_phy
+  DEVICE_DTS_DIR := ../dts
+  SUPPORTED_DEVICES := ruijie,rg-x60-stock
+  DEVICE_PACKAGES := kmod-phy-airoha-en8811h
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += ruijie-rg-x60-stock
+
+define Device/ruijie-rg-x60
+  DEVICE_VENDOR := Ruijie
+  DEVICE_MODEL := Ruijie RG-X60
+  DEVICE_DTS := mt7986a-ruijie-rg-x60
+  DEVICE_DTS_CONFIG := config@ruijie_x60_gsw_en8811h_phy
+  DEVICE_DTS_DIR := ../dts
+  SUPPORTED_DEVICES := ruijie,rg-x60
+  DEVICE_PACKAGES := kmod-phy-airoha-en8811h
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += ruijie-rg-x60
+
 define Device/ruijie_rg-x30e-stock
   DEVICE_VENDOR := Ruijie
   DEVICE_MODEL := Ruijie RG-X30E (stock layout)

@@ -101,7 +101,7 @@ konka,komi-a31)
 ruijie,rg-x30e*)
 	ubootenv_add_uci_config "/dev/mtd2" "0x0" "0x20000" "0x20000" "1"
 	;;
-ruijie,rg-x60-pro* |\
+ruijie,rg-x60* |\
 ruijie,ew-6000gx-pro*)
 	ubootenv_add_uci_config "/dev/mtd2" "0x0" "0x80000" "0x20000" "4"
 	;;
