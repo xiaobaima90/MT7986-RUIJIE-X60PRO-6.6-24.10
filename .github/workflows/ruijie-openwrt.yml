@@ -135,6 +135,8 @@ jobs:
     - name: Checkout Repository
       id: checkout
       uses: actions/checkout@main
+      with:
+        fetch-depth: 0
 
     - name: Cache DL
       uses: actions/cache@v4
@@ -243,6 +245,8 @@ jobs:
     - name: Checkout Repository
       id: checkout
       uses: actions/checkout@main
+      with:
+        fetch-depth: 0
 
     - name: Cache DL
       uses: actions/cache@v4
@@ -362,6 +366,8 @@ jobs:
     - name: Checkout Repository
       id: checkout
       uses: actions/checkout@main
+      with:
+        fetch-depth: 0
 
     - name: Cache DL
       uses: actions/cache@v4
@@ -563,6 +569,8 @@ jobs:
     - name: Checkout Repository
       id: checkout
       uses: actions/checkout@main
+      with:
+        fetch-depth: 0
 
     - name: Cache DL
       uses: actions/cache@v4
@@ -684,6 +692,8 @@ jobs:
     - name: Checkout Repository
       id: checkout
       uses: actions/checkout@main
+      with:
+        fetch-depth: 0
 
     - name: Cache DL
       uses: actions/cache@v4
