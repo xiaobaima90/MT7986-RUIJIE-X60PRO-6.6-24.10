@@ -107,7 +107,7 @@ endef
 
 define Device/ruijie-rg-x60-pro-stock
   DEVICE_VENDOR := Ruijie
-  DEVICE_MODEL := Ruijie RG-X60 Pro (Stock)
+  DEVICE_MODEL := RG-X60 Pro (Stock)
   DEVICE_DTS := mt7986a-ruijie-rg-x60-pro-stock
   DEVICE_DTS_DIR := ../dts
   SUPPORTED_DEVICES := ruijie,rg-x60-pro-stock
@@ -117,7 +117,7 @@ TARGET_DEVICES += ruijie-rg-x60-pro-stock
 
 define Device/ruijie-rg-x60-pro
   DEVICE_VENDOR := Ruijie
-  DEVICE_MODEL := Ruijie RG-X60 Pro
+  DEVICE_MODEL := RG-X60 Pro
   DEVICE_DTS := mt7986a-ruijie-rg-x60-pro
   DEVICE_DTS_DIR := ../dts
   SUPPORTED_DEVICES := ruijie,rg-x60-pro
@@ -127,9 +127,8 @@ TARGET_DEVICES += ruijie-rg-x60-pro
 
 define Device/ruijie-ew-6000gx-pro-stock
   DEVICE_VENDOR := Ruijie
-  DEVICE_MODEL := Ruijie EW-6000GX Pro (Stock)
+  DEVICE_MODEL := EW-6000GX Pro (Stock)
   DEVICE_DTS := mt7986a-ruijie-ew-6000gx-pro-stock
-  DEVICE_DTS_CONFIG := config@ruijie_x60_gsw_en8811h_phy
   DEVICE_DTS_DIR := ../dts
   SUPPORTED_DEVICES := ruijie,ew-6000gx-pro-stock
   DEVICE_PACKAGES := kmod-phy-airoha-en8811h
@@ -139,9 +138,8 @@ TARGET_DEVICES += ruijie-ew-6000gx-pro-stock
 
 define Device/ruijie-ew-6000gx-pro
   DEVICE_VENDOR := Ruijie
-  DEVICE_MODEL := Ruijie EW-6000GX Pro
+  DEVICE_MODEL := EW-6000GX Pro
   DEVICE_DTS := mt7986a-ruijie-ew-6000gx-pro
-  DEVICE_DTS_CONFIG := config@ruijie_x60_gsw_en8811h_phy
   DEVICE_DTS_DIR := ../dts
   SUPPORTED_DEVICES := ruijie,ew-6000gx-pro
   DEVICE_PACKAGES := kmod-phy-airoha-en8811h
@@ -151,9 +149,8 @@ TARGET_DEVICES += ruijie-ew-6000gx-pro
 
 define Device/ruijie-rg-x60-stock
   DEVICE_VENDOR := Ruijie
-  DEVICE_MODEL := Ruijie RG-X60 (Stock)
+  DEVICE_MODEL := RG-X60 (Stock)
   DEVICE_DTS := mt7986a-ruijie-rg-x60-stock
-  DEVICE_DTS_CONFIG := config@ruijie_x60_gsw_en8811h_phy
   DEVICE_DTS_DIR := ../dts
   SUPPORTED_DEVICES := ruijie,rg-x60-stock
   DEVICE_PACKAGES := kmod-phy-airoha-en8811h
@@ -163,9 +160,8 @@ TARGET_DEVICES += ruijie-rg-x60-stock
 
 define Device/ruijie-rg-x60
   DEVICE_VENDOR := Ruijie
-  DEVICE_MODEL := Ruijie RG-X60
+  DEVICE_MODEL := RG-X60
   DEVICE_DTS := mt7986a-ruijie-rg-x60
-  DEVICE_DTS_CONFIG := config@ruijie_x60_gsw_en8811h_phy
   DEVICE_DTS_DIR := ../dts
   SUPPORTED_DEVICES := ruijie,rg-x60
   DEVICE_PACKAGES := kmod-phy-airoha-en8811h
@@ -175,7 +171,7 @@ TARGET_DEVICES += ruijie-rg-x60
 
 define Device/ruijie_rg-x30e-stock
   DEVICE_VENDOR := Ruijie
-  DEVICE_MODEL := Ruijie RG-X30E (stock layout)
+  DEVICE_MODEL := RG-X30E (stock layout)
   DEVICE_DTS := mt7981b-ruijie-rg-x30e-stock
   DEVICE_DTS_DIR := ../dts
   UBINIZE_OPTS := -E 5
@@ -191,7 +187,7 @@ TARGET_DEVICES += ruijie_rg-x30e-stock
 
 define Device/ruijie_rg-x30e-firmware2
   DEVICE_VENDOR := Ruijie
-  DEVICE_MODEL := Ruijie RG-X30E (firmware2 layout)
+  DEVICE_MODEL := RG-X30E (firmware2 layout)
   DEVICE_DTS := mt7981b-ruijie-rg-x30e-firmware2
   DEVICE_DTS_DIR := ../dts
   UBINIZE_OPTS := -E 5
@@ -207,7 +203,7 @@ TARGET_DEVICES += ruijie_rg-x30e-firmware2
 
 define Device/ruijie_rg-x30e
   DEVICE_VENDOR := Ruijie
-  DEVICE_MODEL := Ruijie RG-X30E
+  DEVICE_MODEL := RG-X30E
   DEVICE_DTS := mt7981b-ruijie-rg-x30e
   DEVICE_DTS_DIR := ../dts
   UBINIZE_OPTS := -E 5
@@ -223,7 +219,7 @@ TARGET_DEVICES += ruijie_rg-x30e
 
 define Device/ruijie_rg-x30e-pro-stock
   DEVICE_VENDOR := Ruijie
-  DEVICE_MODEL := Ruijie RG-X30E Pro (stock layout)
+  DEVICE_MODEL := RG-X30E Pro (stock layout)
   DEVICE_DTS := mt7981b-ruijie-rg-x30e-pro-stock
   DEVICE_DTS_DIR := ../dts
   UBINIZE_OPTS := -E 5
@@ -239,7 +235,7 @@ TARGET_DEVICES += ruijie_rg-x30e-pro-stock
 
 define Device/ruijie_rg-x30e-pro-firmware2
   DEVICE_VENDOR := Ruijie
-  DEVICE_MODEL := Ruijie RG-X30E Pro (firmware2 layout)
+  DEVICE_MODEL := RG-X30E Pro (firmware2 layout)
   DEVICE_DTS := mt7981b-ruijie-rg-x30e-pro-firmware2
   DEVICE_DTS_DIR := ../dts
   UBINIZE_OPTS := -E 5
@@ -255,7 +251,7 @@ TARGET_DEVICES += ruijie_rg-x30e-pro-firmware2
 
 define Device/ruijie_rg-x30e-pro
   DEVICE_VENDOR := Ruijie
-  DEVICE_MODEL := Ruijie RG-X30E Pro
+  DEVICE_MODEL := RG-X30E Pro
   DEVICE_DTS := mt7981b-ruijie-rg-x30e-pro
   DEVICE_DTS_DIR := ../dts
   UBINIZE_OPTS := -E 5
@@ -700,16 +696,32 @@ define Device/cetron_ct3003-ubootmod
 endef
 TARGET_DEVICES += cetron_ct3003-ubootmod
 
+define Device/cmcc_a10
+  DEVICE_VENDOR := CMCC
+  DEVICE_MODEL := A10
+  DEVICE_DTS := mt7981b-cmcc-a10
+  DEVICE_DTS_DIR := ../dts
+  SUPPORTED_DEVICES += mediatek,mt7981-spim-snand-rfb
+  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  IMAGE_SIZE := 114688k
+  KERNEL_IN_UBI := 1
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+  KERNEL = kernel-bin | lzma | \
+	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb
+  KERNEL_INITRAMFS = kernel-bin | lzma | \
+	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd
+endef
+TARGET_DEVICES += cmcc_a10
+
 define Device/cmcc_a10-stock
   DEVICE_VENDOR := CMCC
   DEVICE_MODEL := A10
   DEVICE_VARIANT := (stock layout)
-  DEVICE_ALT0_VENDOR := SuperElectron
-  DEVICE_ALT0_MODEL := ZN-M5
-  DEVICE_ALT0_VARIANT := (stock layout)
-  DEVICE_ALT1_VENDOR := SuperElectron
-  DEVICE_ALT1_MODEL := ZN-M8
-  DEVICE_ALT1_VARIANT := (stock layout)
   DEVICE_DTS := mt7981b-cmcc-a10-stock
   DEVICE_DTS_DIR := ../dts
   SUPPORTED_DEVICES += mediatek,mt7981-spim-snand-rfb
@@ -2139,6 +2151,52 @@ define Device/yvr_x6
 endef
 TARGET_DEVICES += yvr_x6
 
+define Device/ruijie_rg-x60-new
+  DEVICE_VENDOR := Ruijie
+  DEVICE_MODEL := RG-X60 New
+  DEVICE_DTS := mt7986a-ruijie-rg-x60-new
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-phy-airoha-en8811h
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += ruijie_rg-x60-new
+
+define Device/ruijie_rg-x60-new-stock
+  DEVICE_VENDOR := Ruijie
+  DEVICE_MODEL := RG-X60 New (Stock)
+  DEVICE_DTS := mt7986a-ruijie-rg-x60-new-stock
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-phy-airoha-en8811h
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += ruijie_rg-x60-new-stock
+
+define Device/ruijie_rg-x60-new-ubootmod
+  DEVICE_VENDOR := Ruijie
+  DEVICE_MODEL := RG-X60 New
+  DEVICE_VARIANT := (OpenWrt U-Boot layout)
+  DEVICE_DTS := mt7986a-ruijie-rg-x60-new-ubootmod
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7986-firmware mt7986-wo-firmware \
+         kmod-phy-airoha-en8811h
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  KERNEL_IN_UBI := 1
+  UBOOTENV_IN_UBI := 1
+  IMAGES := sysupgrade.itb
+  KERNEL_INITRAMFS_SUFFIX := -recovery.itb
+  KERNEL := kernel-bin | gzip
+  KERNEL_INITRAMFS := kernel-bin | lzma | \
+	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd | pad-to 64k
+  IMAGE/sysupgrade.itb := append-kernel | \
+	fit gzip $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb external-static-with-rootfs | append-metadata
+  ARTIFACTS := preloader.bin bl31-uboot.fip
+  ARTIFACT/preloader.bin := mt7986-bl2 spim-nand-ddr3
+  ARTIFACT/bl31-uboot.fip := mt7986-bl31-uboot ruijie_rg-x60-new
+endef
+TARGET_DEVICES += ruijie_rg-x60-new-ubootmod
+
 define Device/yvr_x6_512M
   DEVICE_VENDOR := DaZoo
   DEVICE_MODEL := yvr-x6 (ax6000 512M)
@@ -2166,6 +2224,21 @@ define Device/sl_3000-emmc
 endef
 TARGET_DEVICES += sl_3000-emmc
 
+define Device/sn_r1
+  DEVICE_VENDOR := SN
+  DEVICE_MODEL := R1
+  DEVICE_DTS := mt7981b-sn-r1
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware \
+	f2fsck mkf2fs e2fsprogs kmod-nvme mmc-utils losetup f2fs-tools kmod-fs-f2fs kmod-mmc
+  SUPPORTED_DEVICES += sn,r1
+  KERNEL := kernel-bin | lzma | fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb
+  KERNEL_INITRAMFS := kernel-bin | lzma | \
+        fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd | pad-to 64k
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += sn_r1
+
 define Device/bt_r320
   DEVICE_VENDOR := Globitel
   DEVICE_MODEL := BT-R320
@@ -2178,6 +2251,49 @@ define Device/bt_r320
   IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
 endef
 TARGET_DEVICES += bt_r320
+
+define Device/bt_rb300
+  DEVICE_VENDOR := Globitel
+  DEVICE_MODEL := BT-R320
+  DEVICE_DTS := mt7981b-bt-rb300
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  IMAGE_SIZE := 112640k
+  KERNEL_IN_UBI := 1  
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += bt_rb300
+
+define Device/superelectron_zn-m5-stock
+  DEVICE_VENDOR := SuperElectron
+  DEVICE_MODEL := ZN-M5
+  DEVICE_VARIANT := (stock layout)
+  DEVICE_ALT0_VENDOR := SuperElectron
+  DEVICE_ALT0_MODEL := ZN-M8
+  DEVICE_ALT0_VARIANT := (stock layout)
+  DEVICE_DTS := mt7981b-superelectron-zn-m5-stock
+  DEVICE_DTS_DIR := ../dts
+  SUPPORTED_DEVICES += mediatek,mt7981-spim-snand-rfb
+  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  IMAGE_SIZE := 65536k
+  KERNEL_IN_UBI := 1
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+  KERNEL = kernel-bin | lzma | \
+	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb
+  KERNEL_INITRAMFS = kernel-bin | lzma | \
+	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd
+endef
+TARGET_DEVICES += superelectron_zn-m5-stock
 
 define Device/tplink_re6000xd
   DEVICE_VENDOR := TP-Link
@@ -2511,6 +2627,68 @@ define Device/zbtlink_zbt-z8103ax
   IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
 endef
 TARGET_DEVICES += zbtlink_zbt-z8103ax
+
+define Device/zbtlink_zbt-z8103ax-c
+  DEVICE_VENDOR := Zbtlink
+  DEVICE_MODEL := ZBT-Z8103AX-C
+  DEVICE_DTS := mt7981b-zbtlink-zbt-z8103ax-c
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware kmod-usb3 \
+    kmod-usb-serial-option kmod-usb-storage kmod-usb-net-qmi-wwan uqmi automount
+  KERNEL_IN_UBI := 1
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  IMAGE_SIZE := 117248k
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-ubi | check-size $$(IMAGE_SIZE)
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += zbtlink_zbt-z8103ax-c
+
+define Device/zbtlink_zbt-z8103ax-c-nmbm
+  DEVICE_VENDOR := Zbtlink
+  DEVICE_MODEL := ZBT-Z8103AX-C (NMBM)
+  DEVICE_DTS := mt7981b-zbtlink-zbt-z8103ax-c-nmbm
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware kmod-usb3 \
+    kmod-usb-serial-option kmod-usb-storage kmod-usb-net-qmi-wwan uqmi automount
+  KERNEL_IN_UBI := 1
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  IMAGE_SIZE := 117248k
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-ubi | check-size $$(IMAGE_SIZE)
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += zbtlink_zbt-z8103ax-c-nmbm
+
+define Device/zbtlink_zbt-z8103ax-c-ubootmod
+  DEVICE_VENDOR := Zbtlink
+  DEVICE_MODEL := ZBT-Z8103AX-C
+  DEVICE_VARIANT := (OpenWrt U-Boot layout)
+  DEVICE_DTS := mt7981b-zbtlink-zbt-z8103ax-c-ubootmod
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware kmod-usb3 \
+    kmod-usb-serial-option kmod-usb-storage kmod-usb-net-qmi-wwan uqmi automount
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  KERNEL_IN_UBI := 1
+  UBOOTENV_IN_UBI := 1
+  IMAGES := sysupgrade.itb
+  KERNEL_INITRAMFS_SUFFIX := -recovery.itb
+  KERNEL := kernel-bin | gzip
+  KERNEL_INITRAMFS := kernel-bin | lzma | \
+	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd | pad-to 64k
+  IMAGE/sysupgrade.itb := append-kernel | \
+	fit gzip $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb external-static-with-rootfs | append-metadata
+  ARTIFACTS := preloader.bin bl31-uboot.fip
+  ARTIFACT/preloader.bin := mt7981-bl2 spim-nand-ddr3
+  ARTIFACT/bl31-uboot.fip := mt7981-bl31-uboot zbtlink_zbt-z8103ax-c
+endef
+TARGET_DEVICES += zbtlink_zbt-z8103ax-c-ubootmod
 
 define Device/zyxel_ex5601-t0-stock
   DEVICE_VENDOR := Zyxel

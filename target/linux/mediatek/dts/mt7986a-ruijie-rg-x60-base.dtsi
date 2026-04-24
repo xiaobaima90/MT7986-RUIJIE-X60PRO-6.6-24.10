@@ -10,14 +10,14 @@
 / {
 	aliases {
 		serial0 = &uart0;
-		led-boot = &led_boot;
-		led-failsafe = &led_alarm;
-		led-running = &led_system;
-		led-upgrade = &led_upgrade;
+		led-boot = &led_status_red;
+		led-failsafe = &led_mesh_green;
+		led-running = &led_status_green;
+		led-upgrade = &led_status_blue;
 	};
 
-	chosen {
-		bootargs = "console=ttyS0,115200n1 loglevel=8 earlycon=uart8250,mmio32,0x11002000";
+	chosen: chosen {
+		stdout-path = "serial0:115200n8";
 	};
 
 	memory {
@@ -40,26 +40,30 @@
 		};
 	};
 
-	leds-gpio {
+	gpio-leds {
 		compatible = "gpio-leds";
 
-		led_alarm: led-0 {
-			label = "meshled:status";
+		led_mesh_green: led-0 {
+			color = <LED_COLOR_ID_GREEN>;
+			function = "mesh";
 			gpios = <&pio 22 GPIO_ACTIVE_LOW>;
 		};
 
-		led_boot: led-1 {
-			label = "red:status";
+		led_status_red: led-1 {
+			color = <LED_COLOR_ID_RED>;
+			function = LED_FUNCTION_STATUS;
 			gpios = <&pio 10 GPIO_ACTIVE_LOW>;
 		};
 
-		led_system: led-2 {
-			label = "green:status";
+		led_status_green: led-2 {
+			color = <LED_COLOR_ID_GREEN>;
+			function = LED_FUNCTION_STATUS;
 			gpios = <&pio 9 GPIO_ACTIVE_LOW>;
 		};
 
-		led_upgrade: led-3 {
-			label = "blue:status";
+		led_status_blue: led-3 {
+			color = <LED_COLOR_ID_BLUE>;
+			function = LED_FUNCTION_STATUS;
 			gpios = <&pio 11 GPIO_ACTIVE_LOW>;
 		};
 	};
@@ -88,6 +92,7 @@
 		compatible = "mediatek,eth-mac";
 		reg = <1>;
 		phy-mode = "2500base-x";
+		phy-handle = <&phy15>;
 
 		fixed-link {
             speed = <2500>;
@@ -103,7 +108,7 @@
 };
 
 &mdio {
-	phy15: phy@f {
+	phy15: phy@15 {
 		/* EN8811H PHY ID */
 		compatible = "ethernet-phy-id03a2.a411";
 		/* PHY Address */
@@ -112,6 +117,7 @@
 		reset-assert-us = <10000>;
 		reset-deassert-us = <20000>;
 		phy-mode = "2500base-x";
+		airoha,phy-handle;
 		full-duplex;
 		pause;
 	};
@@ -210,30 +216,27 @@
 		spi-cal-addrlen = <5>;
 		spi-cal-addr = /bits/ 32 <0x0 0x0 0x0 0x0 0x0>;
 
-		mediatek,nmbm;
-        mediatek,bmt-max-ratio = <1>;
-        mediatek,bmt-max-reserved-blocks = <64>;
-
 		partitions: partitions {
 			compatible = "fixed-partitions";
-			#address-cells = <0x01>;
-			#size-cells = <0x01>;
+			#address-cells = <1>;
+			#size-cells = <1>;
 
- 			partition@0 {
- 				label = "BL2";
- 				reg = <0x000000 0x100000>;
- 				read-only;
- 			};
+			partition@0 {
+				label = "BL2";
+				reg = <0x000000 0x100000>;
+				read-only;
+			};
 
- 			partition@100000 {
- 				label = "u-boot-env";
- 				reg = <0x100000 0x80000>;
- 			};
+			partition@100000 {
+				label = "u-boot-env";
+				reg = <0x100000 0x80000>;
+				read-only;
+			};
 
- 			partition@180000 {
- 				label = "Factory";
- 				reg = <0x180000 0x200000>;
- 				read-only;
+			partition@180000 {
+				label = "Factory";
+				reg = <0x180000 0x200000>;
+				read-only;
 
 				nvmem-layout {
 					compatible = "fixed-layout";
@@ -244,34 +247,36 @@
 						reg = <0x0 0x1000>;
 					};
 				};
- 			};
+			};
 
- 			partition@380000 {
- 				label = "FIP";
- 				reg = <0x380000 0x200000>;
+			partition@380000 {
+				label = "FIP";
+				reg = <0x380000 0x200000>;
 				read-only;
- 			};
+			};
 
- 			partition@580000 {
- 				label = "product_info";
- 				reg = <0x580000 0x80000>;
- 				read-only;
- 			};
+			partition@580000 {
+				label = "product_info";
+				reg = <0x580000 0x80000>;
+				read-only;
+			};
 
- 			partition@600000 {
- 				label = "kdump";
- 				reg = <0x600000 0x80000>;
- 			};
+			partition@600000 {
+				label = "kdump";
+				reg = <0x600000 0x80000>;
+				read-only;
+			};
 		};
 	};
 };
+
 
 &wifi {
 	status = "okay";
 	pinctrl-names = "default", "dbdc";
 	pinctrl-0 = <&wf_2g_5g_pins>;
 	pinctrl-1 = <&wf_dbdc_pins>;
-	
+
 	nvmem-cells = <&eeprom_factory_0>;
 	nvmem-cell-names = "eeprom";
 };

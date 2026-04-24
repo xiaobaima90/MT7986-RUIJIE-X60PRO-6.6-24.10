@@ -3,6 +3,12 @@
 /dts-v1/;
 #include "mt7986a-ruijie-rg-x60-base.dtsi"
 
+&spi_nand {
+	mediatek,nmbm;
+	mediatek,bmt-max-ratio = <1>;
+	mediatek,bmt-max-reserved-blocks = <64>;
+};
+
 &switch {
 	ports {
 		#address-cells = <1>;
