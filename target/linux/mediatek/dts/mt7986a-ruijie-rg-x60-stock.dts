@@ -2,15 +2,9 @@
 
 /dts-v1/;
 #include "mt7986a-ruijie-rg-x60.dtsi"
+#include "mt7986a-ruijie-ubi-stock.dtsi"
 
 / {
 	compatible = "ruijie,rg-x60-stock", "mediatek,mt7986a";
  	model = "Ruijie RG-X60 (Stock)";
-};
-
-&partitions {
- 	partition@680000 {
- 		label = "ubi";
- 		reg = <0x680000 0x3f00000>;
- 	};
 };

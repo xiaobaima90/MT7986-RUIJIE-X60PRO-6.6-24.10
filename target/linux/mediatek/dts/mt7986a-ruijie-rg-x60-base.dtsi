@@ -264,7 +264,6 @@
 	};
 };
 
-
 &wifi {
 	status = "okay";
 	pinctrl-names = "default", "dbdc";

@@ -140,7 +140,7 @@ TARGET_DEVICES += ruijie-ew-6000gx-pro-stock
 define Device/ruijie-ew-6000gx-pro
   DEVICE_VENDOR := Ruijie
   DEVICE_MODEL := EW-6000GX Pro
-  DEVICE_DTS := mt7986a-ruijie-ew-6000gx-pro
+  DEVICE_DTS := mt7986a-ruijie-ew-6000gx-pro-expand
   DEVICE_DTS_CONFIG := config@ruijie_x60_gsw_en8811h_phy
   DEVICE_DTS_DIR := ../dts
   SUPPORTED_DEVICES := ruijie,ew-6000gx-pro
@@ -148,6 +148,33 @@ define Device/ruijie-ew-6000gx-pro
   IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
 endef
 TARGET_DEVICES += ruijie-ew-6000gx-pro
+
+define Device/ruijie_ew-6000gx-pro-ubootmod
+  DEVICE_VENDOR := Ruijie
+  DEVICE_MODEL := EW-6000GX Pro
+  DEVICE_VARIANT := (OpenWrt U-Boot layout)
+  DEVICE_DTS := mt7986a-ruijie-ew-6000gx-pro-ubootmod
+  DEVICE_DTS_CONFIG := config@ruijie_x60_gsw_en8811h_phy
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7986-firmware mt7986-wo-firmware \
+         kmod-phy-airoha-en8811h
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  KERNEL_IN_UBI := 1
+  UBOOTENV_IN_UBI := 1
+  IMAGES := sysupgrade.itb
+  KERNEL_INITRAMFS_SUFFIX := -recovery.itb
+  KERNEL := kernel-bin | gzip
+  KERNEL_INITRAMFS := kernel-bin | lzma | \
+	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd | pad-to 64k
+  IMAGE/sysupgrade.itb := append-kernel | \
+	fit gzip $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb external-static-with-rootfs | append-metadata
+  ARTIFACTS := preloader.bin bl31-uboot.fip
+  ARTIFACT/preloader.bin := mt7986-bl2 spim-nand-ddr3
+  ARTIFACT/bl31-uboot.fip := mt7986-bl31-uboot ruijie_ew-6000gx-pro
+endef
+TARGET_DEVICES += ruijie_ew-6000gx-pro-ubootmod
 
 define Device/ruijie-rg-x60-stock
   DEVICE_VENDOR := Ruijie
@@ -164,7 +191,7 @@ TARGET_DEVICES += ruijie-rg-x60-stock
 define Device/ruijie-rg-x60
   DEVICE_VENDOR := Ruijie
   DEVICE_MODEL := RG-X60
-  DEVICE_DTS := mt7986a-ruijie-rg-x60
+  DEVICE_DTS := mt7986a-ruijie-rg-x60-expand
   DEVICE_DTS_CONFIG := config@ruijie_x60_gsw_en8811h_phy
   DEVICE_DTS_DIR := ../dts
   SUPPORTED_DEVICES := ruijie,rg-x60
@@ -176,7 +203,7 @@ TARGET_DEVICES += ruijie-rg-x60
 define Device/ruijie_rg-x60-new
   DEVICE_VENDOR := Ruijie
   DEVICE_MODEL := RG-X60 New
-  DEVICE_DTS := mt7986a-ruijie-rg-x60-new
+  DEVICE_DTS := mt7986a-ruijie-rg-x60-new-expand
   DEVICE_DTS_CONFIG := config@ruijie_x60_gsw_en8811h_phy
   DEVICE_DTS_DIR := ../dts
   DEVICE_PACKAGES := kmod-phy-airoha-en8811h
@@ -2246,7 +2273,7 @@ endef
 TARGET_DEVICES += sn_r1
 
 define Device/bt_r320
-  DEVICE_VENDOR := Globitel
+  DEVICE_VENDOR := BT
   DEVICE_MODEL := BT-R320
   DEVICE_DTS := mt7981b-bt-r320
   DEVICE_DTS_DIR := ../dts
@@ -2259,8 +2286,8 @@ endef
 TARGET_DEVICES += bt_r320
 
 define Device/bt_rb300
-  DEVICE_VENDOR := Globitel
-  DEVICE_MODEL := BT-R320
+  DEVICE_VENDOR := BT
+  DEVICE_MODEL := BT-RB300
   DEVICE_DTS := mt7981b-bt-rb300
   DEVICE_DTS_DIR := ../dts
   DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware
@@ -2357,6 +2384,77 @@ define Device/tplink_tl-xtr8488
   ARTIFACT/bl31-uboot.fip := mt7986-bl31-uboot tplink_tl-xtr8488
 endef
 TARGET_DEVICES += tplink_tl-xtr8488
+
+define Device/tplink_wma301
+  DEVICE_VENDOR := TP-Link
+  DEVICE_MODEL := WMA301
+  DEVICE_DTS := mt7981b-tplink-wma301
+  DEVICE_DTS_DIR := ../dts
+  SUPPORTED_DEVICES += mediatek,mt7981-spim-snand-rfb
+  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  IMAGE_SIZE := 116736k
+  KERNEL_IN_UBI := 1
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+  KERNEL = kernel-bin | lzma | \
+	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb
+  KERNEL_INITRAMFS = kernel-bin | lzma | \
+	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd
+endef
+TARGET_DEVICES += tplink_wma301
+
+define Device/tplink_wma301-stock
+  DEVICE_VENDOR := TP-Link
+  DEVICE_MODEL := WMA301
+  DEVICE_VARIANT := (stock layout)
+  DEVICE_DTS := mt7981b-tplink-wma301-stock
+  DEVICE_DTS_DIR := ../dts
+  SUPPORTED_DEVICES += mediatek,mt7981-spim-snand-rfb
+  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  IMAGE_SIZE := 65536k
+  KERNEL_IN_UBI := 1
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+  KERNEL = kernel-bin | lzma | \
+	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb
+  KERNEL_INITRAMFS = kernel-bin | lzma | \
+	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd
+endef
+TARGET_DEVICES += tplink_wma301-stock
+
+define Device/tplink_wma301-ubootmod
+  DEVICE_VENDOR := TP-Link
+  DEVICE_MODEL := WMA301
+  DEVICE_VARIANT := (OpenWrt layout)
+  DEVICE_DTS := mt7981b-tplink-wma301-ubootmod
+  SUPPORTED_DEVICES += tplink,wma301 mediatek,mt7981
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  KERNEL_IN_UBI := 1
+  UBOOTENV_IN_UBI := 1
+  IMAGES := sysupgrade.itb
+  KERNEL_INITRAMFS_SUFFIX := -recovery.itb
+  KERNEL := kernel-bin | gzip
+  KERNEL_INITRAMFS := kernel-bin | lzma | \
+        fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd | pad-to 64k
+  IMAGE/sysupgrade.itb := append-kernel | \
+        fit gzip $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb external-static-with-rootfs | append-metadata
+  ARTIFACTS := preloader.bin bl31-uboot.fip
+  ARTIFACT/preloader.bin := mt7981-bl2 spim-nand-ddr3
+  ARTIFACT/bl31-uboot.fip := mt7981-bl31-uboot tplink_wma301
+endef
+TARGET_DEVICES += tplink_wma301-ubootmod
 
 define Device/ubnt_unifi-6-plus
   DEVICE_VENDOR := Ubiquiti
