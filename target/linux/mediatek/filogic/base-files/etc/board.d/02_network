@@ -21,8 +21,9 @@ mediatek_setup_interfaces()
 	nokia,ea0326gmp|\
 	mercusys,mr80x-v3|\
 	routerich,ax3000-v1|\
-	ruijie,rg-x60|\
-	ruijie,rg-x60-uboot|\
+	ruijie,rg-x60-107m|\
+	ruijie,rg-x60-expand|\
+	ruijie,rg-x60-stock|\
 	ruijie,rg-x60-new*|\
 	umi,uax3000e|\
 	zbtlink,zbt-z8103ax|\

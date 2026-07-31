@@ -117,7 +117,7 @@ TARGET_DEVICES += ruijie-rg-x60-pro-stock
 
 define Device/ruijie-rg-x60-pro
   DEVICE_VENDOR := Ruijie
-  DEVICE_MODEL := RG-X60 Pro
+  DEVICE_MODEL := RG-X60 Pro (107m)
   DEVICE_DTS := mt7986a-ruijie-rg-x60-pro
   DEVICE_DTS_DIR := ../dts
   SUPPORTED_DEVICES := ruijie,rg-x60-pro
@@ -139,11 +139,11 @@ TARGET_DEVICES += ruijie-ew-6000gx-pro-stock
 
 define Device/ruijie-ew-6000gx-pro
   DEVICE_VENDOR := Ruijie
-  DEVICE_MODEL := EW-6000GX Pro
-  DEVICE_DTS := mt7986a-ruijie-ew-6000gx-pro-expand
+  DEVICE_MODEL := EW-6000GX Pro (107m)
+  DEVICE_DTS := mt7986a-ruijie-ew-6000gx-pro-107m
   DEVICE_DTS_CONFIG := config@ruijie_x60_gsw_en8811h_phy
   DEVICE_DTS_DIR := ../dts
-  SUPPORTED_DEVICES := ruijie,ew-6000gx-pro
+  SUPPORTED_DEVICES := ruijie,ew-6000gx-pro ruijie,ew-6000gx-pro-107m
   DEVICE_PACKAGES := kmod-phy-airoha-en8811h
   IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
 endef
@@ -190,11 +190,11 @@ TARGET_DEVICES += ruijie-rg-x60-stock
 
 define Device/ruijie-rg-x60
   DEVICE_VENDOR := Ruijie
-  DEVICE_MODEL := RG-X60
-  DEVICE_DTS := mt7986a-ruijie-rg-x60-expand
+  DEVICE_MODEL := RG-X60 (107m)
+  DEVICE_DTS := mt7986a-ruijie-rg-x60-107m
   DEVICE_DTS_CONFIG := config@ruijie_x60_gsw_en8811h_phy
   DEVICE_DTS_DIR := ../dts
-  SUPPORTED_DEVICES := ruijie,rg-x60
+  SUPPORTED_DEVICES := ruijie,rg-x60 ruijie,rg-x60-107m
   DEVICE_PACKAGES := kmod-phy-airoha-en8811h
   IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
 endef
@@ -202,10 +202,11 @@ TARGET_DEVICES += ruijie-rg-x60
 
 define Device/ruijie_rg-x60-new
   DEVICE_VENDOR := Ruijie
-  DEVICE_MODEL := RG-X60 New
-  DEVICE_DTS := mt7986a-ruijie-rg-x60-new-expand
+  DEVICE_MODEL := RG-X60 New (107m)
+  DEVICE_DTS := mt7986a-ruijie-rg-x60-new-107m
   DEVICE_DTS_CONFIG := config@ruijie_x60_gsw_en8811h_phy
   DEVICE_DTS_DIR := ../dts
+  SUPPORTED_DEVICES += ruijie,rg-x60-new-107m
   DEVICE_PACKAGES := kmod-phy-airoha-en8811h
   IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
 endef

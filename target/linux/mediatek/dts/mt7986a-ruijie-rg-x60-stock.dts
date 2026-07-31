@@ -6,5 +6,5 @@
 
 / {
 	compatible = "ruijie,rg-x60-stock", "mediatek,mt7986a";
- 	model = "Ruijie RG-X60 (Stock)";
+	model = "Ruijie RG-X60 (Stock)";
 };

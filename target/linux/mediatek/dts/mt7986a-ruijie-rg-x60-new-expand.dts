@@ -6,5 +6,5 @@
 
 / {
 	compatible = "ruijie,rg-x60-new-expand", "mediatek,mt7986a";
-	model = "Ruijie RG-X60 New (expand layout)";
+	model = "Ruijie RG-X60 New (expand)";
 };
