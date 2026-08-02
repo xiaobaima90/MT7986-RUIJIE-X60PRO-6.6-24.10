@@ -155,7 +155,7 @@ define Device/ruijie_ew-6000gx-pro
   DEVICE_DTS := mt7986a-ruijie-ew-6000gx-pro-107m
   DEVICE_DTS_CONFIG := config@ruijie_x60_gsw_en8811h_phy
   DEVICE_DTS_DIR := ../dts
-  SUPPORTED_DEVICES += ruijie,ew-6000gx-pro ruijie,rg-x60-new-107m
+  SUPPORTED_DEVICES += ruijie,ew-6000gx-pro-107m ruijie,rg-x60-new-107m
   DEVICE_PACKAGES := kmod-phy-airoha-en8811h
   IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
 endef
