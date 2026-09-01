@@ -757,7 +757,7 @@ jobs:
   max-release:
     name: Publish Max Release
     runs-on: ubuntu-22.04
-    needs: [mt7981-max, mt7986-max]
+    needs: [mt7986-max]
     steps:
     - name: Checkout Repository
       id: checkout
