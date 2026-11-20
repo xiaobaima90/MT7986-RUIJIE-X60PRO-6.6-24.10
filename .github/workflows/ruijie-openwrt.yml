@@ -258,13 +258,13 @@ jobs:
       uses: actions/cache@v5
       with:
         path: dl
-        key: mt798x-dl-v3-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+        key: mt798x-dl-v4-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Cache Feeds
       uses: actions/cache@v5
       with:
         path: feeds
-        key: mt798x-feeds-v3-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+        key: mt798x-feeds-v4-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Cache Toolchain
       uses: RuijieNetworksCommunity/cache-wrt-toolchain@main
@@ -278,27 +278,30 @@ jobs:
     - name: Upgrade HomeProxy & sing-box
       id: upgrade-packages
       run: |
+        # 1. 清理旧版 homeproxy 并拉取最新 dev 分支
         find package/ feeds/ -maxdepth 4 -iname "*homeproxy*" -exec rm -rf {} +
-        find package/ feeds/ -maxdepth 4 -iname "*sing-box*" -exec rm -rf {} +
-        find package/ feeds/ -maxdepth 4 -iname "*libcronet*" -exec rm -rf {} +
-        rm -rf feeds/packages/lang/golang package/feeds/packages/golang
-
         git clone --depth=1 -b dev https://github.com/immortalwrt/homeproxy.git package/luci-app-homeproxy
 
-        git clone --depth=1 --filter=blob:none --sparse https://github.com/immortalwrt/packages.git temp_packages
-        cd temp_packages && git sparse-checkout set net/sing-box lang/golang && cd ..
-        mv temp_packages/net/sing-box feeds/packages/net/sing-box
-        mv temp_packages/lang/golang feeds/packages/lang/golang
-        rm -rf temp_packages
+        # 2. 精确移除 HomeProxy Makefile 中对 sing-box 源码包的强制依赖（保留其他依赖完整性）
+        sed -i -E 's/\+sing-box(-full|-tiny)?//g' package/luci-app-homeproxy/Makefile
 
-        # 直接从 sing-box Makefile 中剔除 with_cronet 和 with_embedded_tor 标签，防止 full 变体自动强制开启
-        sed -i 's/with_cronet//g' feeds/packages/net/sing-box/Makefile
-        sed -i 's/with_embedded_tor//g' feeds/packages/net/sing-box/Makefile
+        # 3. 获取 SagerNet 官方最新 sing-box 版本号并下载 linux-arm64 预编译内核置入固件根目录
+        LATEST_TAG=$(curl -s https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+        if [ -z "$LATEST_TAG" ]; then
+          echo "获取最新版本失败，回退至稳定版 1.14.3"
+          LATEST_TAG="1.14.3"
+        fi
+        echo "=== 最新 sing-box 官方预编译版本: $LATEST_TAG ==="
+        wget -qO sing-box.tar.gz "https://github.com/SagerNet/sing-box/releases/download/v${LATEST_TAG}/sing-box-${LATEST_TAG}-linux-arm64.tar.gz"
+        tar -xzf sing-box.tar.gz
+        mkdir -p files/usr/bin
+        cp sing-box-${LATEST_TAG}-linux-arm64/sing-box files/usr/bin/sing-box
+        chmod +x files/usr/bin/sing-box
+        rm -rf sing-box.tar.gz sing-box-${LATEST_TAG}-linux-arm64
 
-        ./scripts/feeds update -i
-
-        echo "=== 验证拉取到的源码版本 ==="
-        grep -E "PKG_VERSION:=" package/luci-app-homeproxy/Makefile feeds/packages/net/sing-box/Makefile
+        # 4. 使用 UPX 压缩二进制文件（从 ~35MB 压缩至 ~12MB，防止路由器闪存溢出）
+        upx --lzma files/usr/bin/sing-box || true
+        ls -lh files/usr/bin/sing-box
 
     - name: Install Feeds
       id: install-feeds
@@ -312,17 +315,16 @@ jobs:
     - name: Make Compile Configuration
       id: make-compile-config
       run: |
+        # 彻底清除原配置中的源码版 sing-box 选项，避免与预置二进制文件冲突
+        sed -i '/CONFIG_PACKAGE_sing-box/d' .config
         echo "CONFIG_PACKAGE_ca-bundle=y" >> .config
         echo "CONFIG_PACKAGE_ca-certificates=y" >> .config
-        echo "CONFIG_SING_BOX_WITH_QUIC=y" >> .config
-        echo "CONFIG_SING_BOX_WITH_GRPC=y" >> .config
-        echo "CONFIG_SING_BOX_WITH_UTLS=y" >> .config
-        echo "CONFIG_SING_BOX_WITH_GVISOR=y" >> .config
-        echo "CONFIG_SING_BOX_WITH_CLASH_API=y" >> .config
-        echo "CONFIG_SING_BOX_WITH_WIREGUARD=y" >> .config
-        echo "CONFIG_SING_BOX_WITH_DHCP=y" >> .config
-        echo "# CONFIG_SING_BOX_WITH_CRONET is not set" >> .config
-        echo "# CONFIG_SING_BOX_WITH_EMBEDDED_TOR is not set" >> .config
+        echo "CONFIG_PACKAGE_kmod-nft-tproxy=y" >> .config
+        echo "CONFIG_PACKAGE_kmod-tun=y" >> .config
+        echo "CONFIG_PACKAGE_luci-app-homeproxy=y" >> .config
+        echo "# CONFIG_PACKAGE_sing-box is not set" >> .config
+        echo "# CONFIG_PACKAGE_sing-box-full is not set" >> .config
+        echo "# CONFIG_PACKAGE_sing-box-tiny is not set" >> .config
         make defconfig
 
     - name: Download Package
