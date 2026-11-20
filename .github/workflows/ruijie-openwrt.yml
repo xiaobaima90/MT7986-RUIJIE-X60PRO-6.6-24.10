@@ -258,13 +258,13 @@ jobs:
       uses: actions/cache@v5
       with:
         path: dl
-        key: mt798x-dl-v2-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+        key: mt798x-dl-v3-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Cache Feeds
       uses: actions/cache@v5
       with:
         path: feeds
-        key: mt798x-feeds-v2-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+        key: mt798x-feeds-v3-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Cache Toolchain
       uses: RuijieNetworksCommunity/cache-wrt-toolchain@main
@@ -280,15 +280,15 @@ jobs:
       run: |
         find package/ feeds/ -maxdepth 4 -iname "*homeproxy*" -exec rm -rf {} +
         find package/ feeds/ -maxdepth 4 -iname "*sing-box*" -exec rm -rf {} +
-        rm -rf feeds/packages/lang/golang package/feeds/packages/golang feeds/packages/libs/libcronet
+        find package/ feeds/ -maxdepth 4 -iname "*libcronet*" -exec rm -rf {} +
+        rm -rf feeds/packages/lang/golang package/feeds/packages/golang
 
         git clone --depth=1 -b dev https://github.com/immortalwrt/homeproxy.git package/luci-app-homeproxy
 
         git clone --depth=1 --filter=blob:none --sparse https://github.com/immortalwrt/packages.git temp_packages
-        cd temp_packages && git sparse-checkout set net/sing-box lang/golang libs/libcronet && cd ..
+        cd temp_packages && git sparse-checkout set net/sing-box lang/golang && cd ..
         mv temp_packages/net/sing-box feeds/packages/net/sing-box
         mv temp_packages/lang/golang feeds/packages/lang/golang
-        [ -d temp_packages/libs/libcronet ] && mv temp_packages/libs/libcronet feeds/packages/libs/libcronet
         rm -rf temp_packages
 
         ./scripts/feeds update -i
@@ -405,4 +405,3 @@ jobs:
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
         prerelease: true
-        
