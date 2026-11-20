@@ -291,6 +291,10 @@ jobs:
         mv temp_packages/lang/golang feeds/packages/lang/golang
         rm -rf temp_packages
 
+        # 直接从 sing-box Makefile 中剔除 with_cronet 和 with_embedded_tor 标签，防止 full 变体自动强制开启
+        sed -i 's/with_cronet//g' feeds/packages/net/sing-box/Makefile
+        sed -i 's/with_embedded_tor//g' feeds/packages/net/sing-box/Makefile
+
         ./scripts/feeds update -i
 
         echo "=== 验证拉取到的源码版本 ==="
@@ -310,6 +314,15 @@ jobs:
       run: |
         echo "CONFIG_PACKAGE_ca-bundle=y" >> .config
         echo "CONFIG_PACKAGE_ca-certificates=y" >> .config
+        echo "CONFIG_SING_BOX_WITH_QUIC=y" >> .config
+        echo "CONFIG_SING_BOX_WITH_GRPC=y" >> .config
+        echo "CONFIG_SING_BOX_WITH_UTLS=y" >> .config
+        echo "CONFIG_SING_BOX_WITH_GVISOR=y" >> .config
+        echo "CONFIG_SING_BOX_WITH_CLASH_API=y" >> .config
+        echo "CONFIG_SING_BOX_WITH_WIREGUARD=y" >> .config
+        echo "CONFIG_SING_BOX_WITH_DHCP=y" >> .config
+        echo "# CONFIG_SING_BOX_WITH_CRONET is not set" >> .config
+        echo "# CONFIG_SING_BOX_WITH_EMBEDDED_TOR is not set" >> .config
         make defconfig
 
     - name: Download Package
