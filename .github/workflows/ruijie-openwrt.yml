@@ -285,21 +285,21 @@ jobs:
         # 2. 精确移除 HomeProxy Makefile 中对 sing-box 源码包的强制依赖
         sed -i -E 's/\+sing-box(-full|-tiny)?//g' package/luci-app-homeproxy/Makefile
 
-        # 3. 获取 SagerNet 官方最新 sing-box 版本号并下载 linux-arm64 预编译内核置入固件根目录（不使用 UPX 压缩）
+        # 3. 获取 SagerNet 官方最新 sing-box 版本号并下载 linux-arm64-musl 预编译内核置入固件根目录
         LATEST_TAG=$(curl -s https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
         if [ -z "$LATEST_TAG" ]; then
           echo "获取最新版本失败，回退至稳定版 1.12.12"
           LATEST_TAG="1.12.12"
         fi
-        echo "=== 最新 sing-box 官方预编译版本: $LATEST_TAG ==="
-        curl -fL "https://github.com/SagerNet/sing-box/releases/download/v${LATEST_TAG}/sing-box-${LATEST_TAG}-linux-arm64.tar.gz" -o sing-box.tar.gz
+        echo "=== 最新 sing-box 官方 musl 预编译版本: $LATEST_TAG ==="
+        curl -fL "https://github.com/SagerNet/sing-box/releases/download/v${LATEST_TAG}/sing-box-${LATEST_TAG}-linux-arm64-musl.tar.gz" -o sing-box.tar.gz
         tar -xzf sing-box.tar.gz
         mkdir -p files/usr/bin
-        cp sing-box-${LATEST_TAG}-linux-arm64/sing-box files/usr/bin/sing-box
-        chmod 755 files/usr/bin/sing-box
-        rm -rf sing-box.tar.gz sing-box-${LATEST_TAG}-linux-arm64
+        cp sing-box-${LATEST_TAG}-linux-arm64-musl/sing-box files/usr/bin/sing-box
+        chmod 555 files/usr/bin/sing-box
+        rm -rf sing-box.tar.gz sing-box-${LATEST_TAG}-linux-arm64-musl
 
-        # 4. 校验文件架构与完整性（必须大于 15MB，防止残缺文件打包）
+        # 4. 校验文件架构（必须为 musl 动态链接器）与完整性（大于 15MB）
         file files/usr/bin/sing-box
         ls -lh files/usr/bin/sing-box
         SIZE=$(stat -c%s files/usr/bin/sing-box)
@@ -322,7 +322,6 @@ jobs:
       run: |
         # 彻底清除原配置中的源码版 sing-box 选项，避免与预置二进制文件冲突
         sed -i '/CONFIG_PACKAGE_sing-box/d' .config
-        echo "CONFIG_NO_STRIP=y" >> .config
         echo "CONFIG_PACKAGE_ca-bundle=y" >> .config
         echo "CONFIG_PACKAGE_ca-certificates=y" >> .config
         echo "CONFIG_PACKAGE_kmod-nft-socket=y" >> .config
