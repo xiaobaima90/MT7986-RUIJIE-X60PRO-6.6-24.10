@@ -1,6 +1,6 @@
 name: Ruijie Openwrt Development
 
-on:
+on:122222
   push:
     branches: [ "openwrt-24.10-6.6" ]
   pull_request:
