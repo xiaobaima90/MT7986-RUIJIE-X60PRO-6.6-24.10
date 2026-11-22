@@ -315,11 +315,12 @@ jobs:
           -o "$GITHUB_WORKSPACE/sing-box-bin" \
           ./cmd/sing-box
 
-        # 6. 置入固件根目录并设 555 只读权限，随后彻底清理源码与 Go 缓存释放磁盘空间
+        # 6. 置入固件根目录并设 555 只读权限，恢复缓存写权限后彻底清理释放磁盘空间
         cd "$GITHUB_WORKSPACE"
         mkdir -p files/usr/bin
         cp "$GITHUB_WORKSPACE/sing-box-bin" files/usr/bin/sing-box
         chmod 555 files/usr/bin/sing-box
+        chmod -R +w "$GOPATH" "$GOCACHE" "$GOTMPDIR" 2>/dev/null || true
         rm -rf "$GITHUB_WORKSPACE/sing-box-src" "$GITHUB_WORKSPACE/sing-box-bin" "$GOPATH" "$GOCACHE" "$GOTMPDIR"
 
         # 7. 校验文件架构（静态链接）与体积（大于 10MB）
