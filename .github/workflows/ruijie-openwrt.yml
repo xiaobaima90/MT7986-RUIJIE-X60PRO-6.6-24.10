@@ -275,6 +275,12 @@ jobs:
       id: update-feeds
       run: ./scripts/feeds update -a
 
+    - name: Setup Go Environment
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.24'
+        cache: false
+
     - name: Upgrade HomeProxy & sing-box
       id: upgrade-packages
       run: |
@@ -285,26 +291,37 @@ jobs:
         # 2. 精确移除 HomeProxy Makefile 中对 sing-box 源码包的强制依赖
         sed -i -E 's/\+sing-box(-full|-tiny)?//g' package/luci-app-homeproxy/Makefile
 
-        # 3. 获取 SagerNet 官方最新 sing-box 版本号并下载 linux-arm64-musl 预编译内核置入固件根目录
+        # 3. 获取 SagerNet 官方最新 sing-box 版本号并拉取源码裁剪编译
         LATEST_TAG=$(curl -s https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
         if [ -z "$LATEST_TAG" ]; then
           echo "获取最新版本失败，回退至稳定版 1.12.12"
           LATEST_TAG="1.12.12"
         fi
-        echo "=== 最新 sing-box 官方 musl 预编译版本: $LATEST_TAG ==="
-        curl -fL "https://github.com/SagerNet/sing-box/releases/download/v${LATEST_TAG}/sing-box-${LATEST_TAG}-linux-arm64-musl.tar.gz" -o sing-box.tar.gz
-        tar -xzf sing-box.tar.gz
-        mkdir -p files/usr/bin
-        cp sing-box-${LATEST_TAG}-linux-arm64-musl/sing-box files/usr/bin/sing-box
-        chmod 555 files/usr/bin/sing-box
-        rm -rf sing-box.tar.gz sing-box-${LATEST_TAG}-linux-arm64-musl
+        echo "=== 开始源码裁剪编译 sing-box v${LATEST_TAG} ==="
+        git clone --depth=1 -b "v${LATEST_TAG}" https://github.com/SagerNet/sing-box.git /tmp/sing-box-src
 
-        # 4. 校验文件架构（必须为 musl 动态链接器）与完整性（大于 15MB）
+        # 4. 纯静态编译 linux/arm64 精简版（仅保留主力协议，剔除 Tor/Tailscale/WireGuard/ACME 等重型模块）
+        cd /tmp/sing-box-src
+        CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build \
+          -v -trimpath \
+          -tags "with_quic,with_utls,with_reality_server,with_gvisor,with_clash_api" \
+          -ldflags "-X github.com/sagernet/sing-box/constant.Version=${LATEST_TAG} -s -w -buildid=" \
+          -o /tmp/sing-box \
+          ./cmd/sing-box
+
+        # 5. 置入固件根目录并设 555 只读权限（防 OpenWrt rstrip.sh 破坏 Go 符号表）
+        cd "$GITHUB_WORKSPACE"
+        mkdir -p files/usr/bin
+        cp /tmp/sing-box files/usr/bin/sing-box
+        chmod 555 files/usr/bin/sing-box
+        rm -rf /tmp/sing-box-src /tmp/sing-box
+
+        # 6. 校验文件架构（静态链接）与体积（大于 10MB）
         file files/usr/bin/sing-box
         ls -lh files/usr/bin/sing-box
         SIZE=$(stat -c%s files/usr/bin/sing-box)
-        if [ "$SIZE" -lt 15000000 ]; then
-          echo "ERROR: sing-box 二进制文件异常过小 ($SIZE bytes)，中止编译！"
+        if [ "$SIZE" -lt 10000000 ]; then
+          echo "ERROR: sing-box 编译产物异常过小 ($SIZE bytes)，中止编译！"
           exit 1
         fi
 
