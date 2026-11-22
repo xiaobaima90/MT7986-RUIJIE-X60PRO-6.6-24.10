@@ -7,9 +7,9 @@ on:
     branches: [ "openwrt-24.10-6.6" ]
   workflow_dispatch:
 
-permissions: 
+permissions:
   contents: write
-  
+
 env:
   UPLOAD_BIN_DIR: true
   UPLOAD_FIRMWARE: true
@@ -91,38 +91,17 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         sudo apt-get update
-        sudo apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
-          bzip2 ccache clang clangd cmake cpio curl device-tree-compiler ecj fastjar flex gawk gettext gcc-multilib \
-          g++-multilib git gnutls-dev gperf haveged help2man intltool lib32gcc-s1 libc6-dev-i386 libelf-dev \
-          libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5 \
-          libncursesw5-dev libncurses-dev libpython3-dev libreadline-dev libssl-dev libtool libyaml-dev libz-dev \
-          lld lldb llvm lrzsz mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 \
-          python3-pip python3-ply python3-docutils python3-pyelftools qemu-utils re2c rsync scons squashfs-tools \
-          subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev zstd
-
+        sudo apt-get install -y --no-install-recommends \
+          ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
+          bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gettext gcc-multilib \
+          g++-multilib git gnutls-dev gperf haveged help2man intltool lib32gcc-s1 libc6-dev-i386 \
+          libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses-dev \
+          libpython3-dev libreadline-dev libssl-dev libtool libyaml-dev libz-dev lld llvm lrzsz \
+          mkisofs ninja-build p7zip p7zip-full patch pkgconf python3 python3-pip python3-ply \
+          python3-docutils python3-pyelftools qemu-utils re2c rsync squashfs-tools swig texinfo \
+          uglifyjs upx-ucl unzip wget xmlto xxd zlib1g-dev zstd
         sudo apt-get clean
         sudo timedatectl set-timezone "$TZ"
-
-    - name: Optimize Disk
-      uses: "hugoalh/disk-space-optimizer-ghaction@v0.8.1"
-      with:
-        operate_sudo: "True"
-        general_include: ".+"
-        general_exclude: |-
-          ^GCC$
-          ^G\+\+$
-          Clang
-          LLVM
-        docker_include: ".+"
-        docker_prune: "True"
-        docker_clean: "True"
-        apt_prune: "True"
-        apt_clean: "True"
-        homebrew_prune: "True"
-        homebrew_clean: "True"
-        npm_prune: "True"
-        npm_clean: "True"
-        os_swap: "True"
 
     - name: Combine Disks
       uses: easimon/maximize-build-space@master
@@ -146,13 +125,13 @@ jobs:
       uses: actions/cache@v5
       with:
         path: dl
-        key: mt798x-dl-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+        key: mt798x-dl-v5-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Cache Feeds
       uses: actions/cache@v5
       with:
         path: feeds
-        key: mt798x-feeds-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+        key: mt798x-feeds-v5-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Cache Toolchain
       uses: RuijieNetworksCommunity/cache-wrt-toolchain@main
@@ -203,38 +182,17 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         sudo apt-get update
-        sudo apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
-          bzip2 ccache clang clangd cmake cpio curl device-tree-compiler ecj fastjar flex gawk gettext gcc-multilib \
-          g++-multilib git gnutls-dev gperf haveged help2man intltool lib32gcc-s1 libc6-dev-i386 libelf-dev \
-          libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5 \
-          libncursesw5-dev libncurses-dev libpython3-dev libreadline-dev libssl-dev libtool libyaml-dev libz-dev \
-          lld lldb llvm lrzsz mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 \
-          python3-pip python3-ply python3-docutils python3-pyelftools qemu-utils re2c rsync scons squashfs-tools \
-          subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev zstd
-
+        sudo apt-get install -y --no-install-recommends \
+          ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
+          bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gettext gcc-multilib \
+          g++-multilib git gnutls-dev gperf haveged help2man intltool lib32gcc-s1 libc6-dev-i386 \
+          libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses-dev \
+          libpython3-dev libreadline-dev libssl-dev libtool libyaml-dev libz-dev lld llvm lrzsz \
+          mkisofs ninja-build p7zip p7zip-full patch pkgconf python3 python3-pip python3-ply \
+          python3-docutils python3-pyelftools qemu-utils re2c rsync squashfs-tools swig texinfo \
+          uglifyjs upx-ucl unzip wget xmlto xxd zlib1g-dev zstd
         sudo apt-get clean
         sudo timedatectl set-timezone "$TZ"
-
-    - name: Optimize Disk
-      uses: "hugoalh/disk-space-optimizer-ghaction@v0.8.1"
-      with:
-        operate_sudo: "True"
-        general_include: ".+"
-        general_exclude: |-
-          ^GCC$
-          ^G\+\+$
-          Clang
-          LLVM
-        docker_include: ".+"
-        docker_prune: "True"
-        docker_clean: "True"
-        apt_prune: "True"
-        apt_clean: "True"
-        homebrew_prune: "True"
-        homebrew_clean: "True"
-        npm_prune: "True"
-        npm_clean: "True"
-        os_swap: "True"
 
     - name: Combine Disks
       uses: easimon/maximize-build-space@master
@@ -258,13 +216,13 @@ jobs:
       uses: actions/cache@v5
       with:
         path: dl
-        key: mt798x-dl-v4-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+        key: mt798x-dl-v5-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Cache Feeds
       uses: actions/cache@v5
       with:
         path: feeds
-        key: mt798x-feeds-v4-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+        key: mt798x-feeds-v5-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Cache Toolchain
       uses: RuijieNetworksCommunity/cache-wrt-toolchain@main
@@ -276,46 +234,38 @@ jobs:
       run: ./scripts/feeds update -a
 
     - name: Setup Go Environment
-      uses: actions/setup-go@v5
+      uses: actions/setup-go@v6
       with:
-        go-version: '1.24'
+        go-version: '1.25'
         cache: false
 
     - name: Upgrade HomeProxy & sing-box
       id: upgrade-packages
       run: |
-        # 1. 将 Go 缓存与编译目录全部重定向到大容量工作区，避免撑爆系统根分区
         export GOPATH="$GITHUB_WORKSPACE/.go-cache"
         export GOCACHE="$GITHUB_WORKSPACE/.go-build"
         export GOTMPDIR="$GITHUB_WORKSPACE/.go-tmp"
         mkdir -p "$GOPATH" "$GOCACHE" "$GOTMPDIR"
 
-        # 2. 清理旧版 homeproxy 并拉取最新 dev 分支
         find package/ feeds/ -maxdepth 4 -iname "*homeproxy*" -exec rm -rf {} +
         git clone --depth=1 -b dev https://github.com/immortalwrt/homeproxy.git package/luci-app-homeproxy
-
-        # 3. 精确移除 HomeProxy Makefile 中对 sing-box 源码包的强制依赖
         sed -i -E 's/\+sing-box(-full|-tiny)?//g' package/luci-app-homeproxy/Makefile
 
-        # 4. 获取 SagerNet 官方最新 sing-box 版本号并拉取源码裁剪编译
         LATEST_TAG=$(curl -s https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
         if [ -z "$LATEST_TAG" ]; then
-          echo "获取最新版本失败，回退至稳定版 1.12.12"
           LATEST_TAG="1.12.12"
         fi
-        echo "=== 开始源码裁剪编译 sing-box v${LATEST_TAG} ==="
+        echo "=== Building sing-box v${LATEST_TAG} ==="
         git clone --depth=1 -b "v${LATEST_TAG}" https://github.com/SagerNet/sing-box.git "$GITHUB_WORKSPACE/sing-box-src"
 
-        # 5. 纯静态编译 linux/arm64 精简版（仅保留主力协议，剔除 Tor/Tailscale/WireGuard/ACME 等重型模块）
         cd "$GITHUB_WORKSPACE/sing-box-src"
-        CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build \
+        CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM64=v8.0,crypto go build \
           -v -trimpath \
           -tags "with_quic,with_utls,with_gvisor,with_clash_api" \
           -ldflags "-X github.com/sagernet/sing-box/constant.Version=${LATEST_TAG} -s -w -buildid=" \
           -o "$GITHUB_WORKSPACE/sing-box-bin" \
           ./cmd/sing-box
 
-        # 6. 置入固件根目录并设 555 只读权限，恢复缓存写权限后彻底清理释放磁盘空间
         cd "$GITHUB_WORKSPACE"
         mkdir -p files/usr/bin
         cp "$GITHUB_WORKSPACE/sing-box-bin" files/usr/bin/sing-box
@@ -323,14 +273,26 @@ jobs:
         chmod -R +w "$GOPATH" "$GOCACHE" "$GOTMPDIR" 2>/dev/null || true
         rm -rf "$GITHUB_WORKSPACE/sing-box-src" "$GITHUB_WORKSPACE/sing-box-bin" "$GOPATH" "$GOCACHE" "$GOTMPDIR"
 
-        # 7. 校验文件架构（静态链接）与体积（大于 10MB）
         file files/usr/bin/sing-box
         ls -lh files/usr/bin/sing-box
         SIZE=$(stat -c%s files/usr/bin/sing-box)
         if [ "$SIZE" -lt 10000000 ]; then
-          echo "ERROR: sing-box 编译产物异常过小 ($SIZE bytes)，中止编译！"
+          echo "ERROR: sing-box binary too small ($SIZE bytes)"
           exit 1
         fi
+
+        mkdir -p files/etc/uci-defaults
+        printf '%s\n' \
+          "uci set network.lan.ipaddr='192.168.10.1'" \
+          "uci set system.@system[0].timezone='CST-8'" \
+          "uci set system.@system[0].zonename='Asia/Shanghai'" \
+          "uci set firewall.@defaults[0].flow_offloading='1'" \
+          "uci set firewall.@defaults[0].flow_offloading_hw='0'" \
+          "uci commit network" \
+          "uci commit system" \
+          "uci commit firewall" \
+          "exit 0" > files/etc/uci-defaults/99-custom
+        chmod 755 files/etc/uci-defaults/99-custom
 
     - name: Install Feeds
       id: install-feeds
@@ -344,8 +306,14 @@ jobs:
     - name: Make Compile Configuration
       id: make-compile-config
       run: |
-        # 彻底清除原配置中的源码版 sing-box 选项，避免与预置二进制文件冲突
         sed -i '/CONFIG_PACKAGE_sing-box/d' .config
+        sed -i '/CONFIG_DEVEL/d' .config
+        sed -i '/CONFIG_TARGET_OPTIONS/d' .config
+        sed -i '/CONFIG_TARGET_OPTIMIZATION/d' .config
+        echo 'CONFIG_DEVEL=y' >> .config
+        echo 'CONFIG_TARGET_OPTIONS=y' >> .config
+        echo 'CONFIG_TARGET_OPTIMIZATION="-O2 -pipe -mcpu=cortex-a53+crypto"' >> .config
+        echo "CONFIG_PACKAGE_kmod-nft-offload=y" >> .config
         echo "CONFIG_PACKAGE_ca-bundle=y" >> .config
         echo "CONFIG_PACKAGE_ca-certificates=y" >> .config
         echo "CONFIG_PACKAGE_kmod-nft-socket=y" >> .config
@@ -357,6 +325,7 @@ jobs:
         echo "# CONFIG_PACKAGE_sing-box-full is not set" >> .config
         echo "# CONFIG_PACKAGE_sing-box-tiny is not set" >> .config
         make defconfig
+        grep "CONFIG_TARGET_OPTIMIZATION" .config
 
     - name: Download Package
       id: download-package
@@ -408,17 +377,12 @@ jobs:
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
         mkdir -p release
-
         rm -rf artifacts/mt7986/packages
-
         find artifacts/mt7986/targets/mediatek/filogic/ -type f ! -name "*.bin" -delete
         find artifacts/mt7986/targets/mediatek/filogic/ -type f -name "*-bl2.bin" -delete
         find artifacts/mt7986/targets/mediatek/filogic/ -mindepth 1 -type d -exec rm -rf {} +
-
         cp -r artifacts/mt7986/targets/mediatek/filogic/*.bin release/
-
         cd release
-
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
 
@@ -438,7 +402,6 @@ jobs:
           echo "### Diff:"
           git diff --name-only HEAD^ HEAD | sed 's/^/- /'
         } > release.txt
-
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload Release
