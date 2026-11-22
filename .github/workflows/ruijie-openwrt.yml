@@ -284,39 +284,45 @@ jobs:
     - name: Upgrade HomeProxy & sing-box
       id: upgrade-packages
       run: |
-        # 1. 清理旧版 homeproxy 并拉取最新 dev 分支
+        # 1. 将 Go 缓存与编译目录全部重定向到大容量工作区，避免撑爆系统根分区
+        export GOPATH="$GITHUB_WORKSPACE/.go-cache"
+        export GOCACHE="$GITHUB_WORKSPACE/.go-build"
+        export GOTMPDIR="$GITHUB_WORKSPACE/.go-tmp"
+        mkdir -p "$GOPATH" "$GOCACHE" "$GOTMPDIR"
+
+        # 2. 清理旧版 homeproxy 并拉取最新 dev 分支
         find package/ feeds/ -maxdepth 4 -iname "*homeproxy*" -exec rm -rf {} +
         git clone --depth=1 -b dev https://github.com/immortalwrt/homeproxy.git package/luci-app-homeproxy
 
-        # 2. 精确移除 HomeProxy Makefile 中对 sing-box 源码包的强制依赖
+        # 3. 精确移除 HomeProxy Makefile 中对 sing-box 源码包的强制依赖
         sed -i -E 's/\+sing-box(-full|-tiny)?//g' package/luci-app-homeproxy/Makefile
 
-        # 3. 获取 SagerNet 官方最新 sing-box 版本号并拉取源码裁剪编译
+        # 4. 获取 SagerNet 官方最新 sing-box 版本号并拉取源码裁剪编译
         LATEST_TAG=$(curl -s https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
         if [ -z "$LATEST_TAG" ]; then
           echo "获取最新版本失败，回退至稳定版 1.12.12"
           LATEST_TAG="1.12.12"
         fi
         echo "=== 开始源码裁剪编译 sing-box v${LATEST_TAG} ==="
-        git clone --depth=1 -b "v${LATEST_TAG}" https://github.com/SagerNet/sing-box.git /tmp/sing-box-src
+        git clone --depth=1 -b "v${LATEST_TAG}" https://github.com/SagerNet/sing-box.git "$GITHUB_WORKSPACE/sing-box-src"
 
-        # 4. 纯静态编译 linux/arm64 精简版（仅保留主力协议，剔除 Tor/Tailscale/WireGuard/ACME 等重型模块）
-        cd /tmp/sing-box-src
+        # 5. 纯静态编译 linux/arm64 精简版（仅保留主力协议，剔除 Tor/Tailscale/WireGuard/ACME 等重型模块）
+        cd "$GITHUB_WORKSPACE/sing-box-src"
         CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build \
           -v -trimpath \
           -tags "with_quic,with_utls,with_gvisor,with_clash_api" \
           -ldflags "-X github.com/sagernet/sing-box/constant.Version=${LATEST_TAG} -s -w -buildid=" \
-          -o /tmp/sing-box \
+          -o "$GITHUB_WORKSPACE/sing-box-bin" \
           ./cmd/sing-box
 
-        # 5. 置入固件根目录并设 555 只读权限（防 OpenWrt rstrip.sh 破坏 Go 符号表）
+        # 6. 置入固件根目录并设 555 只读权限，随后彻底清理源码与 Go 缓存释放磁盘空间
         cd "$GITHUB_WORKSPACE"
         mkdir -p files/usr/bin
-        cp /tmp/sing-box files/usr/bin/sing-box
+        cp "$GITHUB_WORKSPACE/sing-box-bin" files/usr/bin/sing-box
         chmod 555 files/usr/bin/sing-box
-        rm -rf /tmp/sing-box-src /tmp/sing-box
+        rm -rf "$GITHUB_WORKSPACE/sing-box-src" "$GITHUB_WORKSPACE/sing-box-bin" "$GOPATH" "$GOCACHE" "$GOTMPDIR"
 
-        # 6. 校验文件架构（静态链接）与体积（大于 10MB）
+        # 7. 校验文件架构（静态链接）与体积（大于 10MB）
         file files/usr/bin/sing-box
         ls -lh files/usr/bin/sing-box
         SIZE=$(stat -c%s files/usr/bin/sing-box)
