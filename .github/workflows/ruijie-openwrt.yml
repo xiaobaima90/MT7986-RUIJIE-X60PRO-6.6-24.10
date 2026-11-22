@@ -91,15 +91,16 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         sudo apt-get update
-        sudo apt-get install -y --no-install-recommends \
+        sudo apt-get install -y \
           ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
           bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gettext gcc-multilib \
           g++-multilib git gnutls-dev gperf haveged help2man intltool lib32gcc-s1 libc6-dev-i386 \
-          libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses-dev \
-          libpython3-dev libreadline-dev libssl-dev libtool libyaml-dev libz-dev lld llvm lrzsz \
-          mkisofs ninja-build p7zip p7zip-full patch pkgconf python3 python3-pip python3-ply \
-          python3-docutils python3-pyelftools qemu-utils re2c rsync squashfs-tools swig texinfo \
-          uglifyjs upx-ucl unzip wget xmlto xxd zlib1g-dev zstd
+          libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev \
+          libncursesw5-dev libncurses-dev libpython3-dev libreadline-dev libssl-dev libtool \
+          libyaml-dev libz-dev lld llvm lrzsz mkisofs ninja-build p7zip p7zip-full patch pkgconf \
+          python3 python3-pip python3-ply python3-docutils python3-pyelftools qemu-utils re2c \
+          rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget \
+          xmlto xxd zlib1g-dev zstd
         sudo apt-get clean
         sudo timedatectl set-timezone "$TZ"
 
@@ -136,7 +137,7 @@ jobs:
     - name: Cache Toolchain
       uses: RuijieNetworksCommunity/cache-wrt-toolchain@main
       with:
-        mixkey: ${{ hashFiles('.github/workflows/cache-control') }}
+        mixkey: v2-${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Update Feeds
       id: update-feeds
@@ -227,7 +228,7 @@ jobs:
     - name: Cache Toolchain
       uses: RuijieNetworksCommunity/cache-wrt-toolchain@main
       with:
-        mixkey: ${{ hashFiles('.github/workflows/cache-control') }}
+        mixkey: v2-${{ hashFiles('.github/workflows/cache-control') }}
 
     - name: Update Feeds
       id: update-feeds
