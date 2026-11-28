@@ -237,12 +237,13 @@ jobs:
     - name: Setup Go Environment
       uses: actions/setup-go@v6
       with:
-        go-version: '1.25'
+        go-version: '1.26'
         cache: false
 
     - name: Upgrade HomeProxy & sing-box
       id: upgrade-packages
       run: |
+        export GOTOOLCHAIN=auto
         export GOPATH="$GITHUB_WORKSPACE/.go-cache"
         export GOCACHE="$GITHUB_WORKSPACE/.go-build"
         export GOTMPDIR="$GITHUB_WORKSPACE/.go-tmp"
