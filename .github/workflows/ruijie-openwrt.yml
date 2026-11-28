@@ -22,154 +22,154 @@ jobs:
     if: false
     runs-on: ubuntu-22.04
     steps:
-    - name: Checkout
-      uses: actions/checkout@main
+      - name: Checkout
+        uses: actions/checkout@main
 
-    - name: Get Commit Info
-      id: get_commit
-      run: |
-        COMMIT_MSG=$(git log -1 --pretty=%B | tr '\n' ' ' | xargs)
-        COMMIT_AUTHOR=$(git log -1 --pretty=%an)
-        echo "COMMIT_MSG=$COMMIT_MSG" >> $GITHUB_OUTPUT
-        echo "COMMIT_AUTHOR=$COMMIT_AUTHOR" >> $GITHUB_OUTPUT
+      - name: Get Commit Info
+        id: get_commit
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B | tr '\n' ' ' | xargs)
+          COMMIT_AUTHOR=$(git log -1 --pretty=%an)
+          echo "COMMIT_MSG=$COMMIT_MSG" >> $GITHUB_OUTPUT
+          echo "COMMIT_AUTHOR=$COMMIT_AUTHOR" >> $GITHUB_OUTPUT
 
-    - name: Send Messages
-      id: request
-      uses: tyrrrz/action-http-request@prime
-      with:
-        url: https://api.1tip.cc:8000/qqbot/send_group_msg
-        method: POST
-        headers: |
-          Content-Type: application/json
-          Authorization: ${{ secrets.ORG_QQ_BOOT_SECRET }}
-        body: |
-          {
-              "group_id": "860015881",
-              "message": [
-                  {
-                      "type": "text",
-                      "data": {
-                          "text": "【更新提示】\n检测到新的Github Action开发版构建实例，仓库名【${{ github.repository }}】，提交人【${{ steps.get_commit.outputs.COMMIT_AUTHOR }}】，更改内容【${{ steps.get_commit.outputs.COMMIT_MSG }}】，系统已开始构建，请耐心等待，构建完成后可于仓库的Release处下载。（如果长时间未生成Release，请召唤管理）\n"
-                      }
-                  }
-              ]
-          }
-        retry-count: 3
-        retry-delay: 500
+      - name: Send Messages
+        id: request
+        uses: tyrrrz/action-http-request@prime
+        with:
+          url: https://api.1tip.cc:8000/qqbot/send_group_msg
+          method: POST
+          headers: |
+            Content-Type: application/json
+            Authorization: ${{ secrets.ORG_QQ_BOOT_SECRET }}
+          body: |
+            {
+                "group_id": "860015881",
+                "message": [
+                    {
+                        "type": "text",
+                        "data": {
+                            "text": "【更新提示】\n检测到新的Github Action开发版构建实例，仓库名【${{ github.repository }}】，提交人【${{ steps.get_commit.outputs.COMMIT_AUTHOR }}】，更改内容【${{ steps.get_commit.outputs.COMMIT_MSG }}】，系统已开始构建，请耐心等待，构建完成后可于仓库的Release处下载。（如果长时间未生成Release，请召唤管理）\n"
+                        }
+                    }
+                ]
+            }
+          retry-count: 3
+          retry-delay: 500
 
-    - name: Send Messages to Private Group
-      id: request-private
-      uses: tyrrrz/action-http-request@prime
-      with:
-        url: https://api.1tip.cc:8000/qqbot/send_group_msg
-        method: POST
-        headers: |
-          Content-Type: application/json
-          Authorization: ${{ secrets.ORG_QQ_BOOT_SECRET }}
-        body: |
-          {
-              "group_id": ${{ secrets.ORG_QQ_PRVI_GROUP_NUM }},
-              "message": [
-                  {
-                      "type": "text",
-                      "data": {
-                          "text": "【${{ github.repository }}】有新的Commit，提交人【${{ steps.get_commit.outputs.COMMIT_AUTHOR }}】，更改内容【${{ steps.get_commit.outputs.COMMIT_MSG }}】\n"
-                      }
-                  }
-              ]
-          }
-        retry-count: 3
-        retry-delay: 500
+      - name: Send Messages to Private Group
+        id: request-private
+        uses: tyrrrz/action-http-request@prime
+        with:
+          url: https://api.1tip.cc:8000/qqbot/send_group_msg
+          method: POST
+          headers: |
+            Content-Type: application/json
+            Authorization: ${{ secrets.ORG_QQ_BOOT_SECRET }}
+          body: |
+            {
+                "group_id": ${{ secrets.ORG_QQ_PRVI_GROUP_NUM }},
+                "message": [
+                    {
+                        "type": "text",
+                        "data": {
+                            "text": "【${{ github.repository }}】有新的Commit，提交人【${{ steps.get_commit.outputs.COMMIT_AUTHOR }}】，更改内容【${{ steps.get_commit.outputs.COMMIT_MSG }}】\n"
+                        }
+                    }
+                ]
+            }
+          retry-count: 3
+          retry-delay: 500
 
   cache-toolchain:
     name: Compile & Cache Toolchain
     runs-on: ubuntu-22.04
     steps:
-    - name: Initialization Environment
-      id: env
-      env:
-        DEBIAN_FRONTEND: noninteractive
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y \
-          ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
-          bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gettext gcc-multilib \
-          g++-multilib git gnutls-dev gperf haveged help2man intltool lib32gcc-s1 libc6-dev-i386 \
-          libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev \
-          libncursesw5-dev libncurses-dev libpython3-dev libreadline-dev libssl-dev libtool \
-          libyaml-dev libz-dev lld llvm lrzsz mkisofs ninja-build p7zip p7zip-full patch pkgconf \
-          python3 python3-pip python3-ply python3-docutils python3-pyelftools qemu-utils re2c \
-          rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget \
-          xmlto xxd zlib1g-dev zstd
-        sudo apt-get clean
-        sudo timedatectl set-timezone "$TZ"
+      - name: Initialization Environment
+        id: env
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
+            bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gettext gcc-multilib \
+            g++-multilib git gnutls-dev gperf haveged help2man intltool lib32gcc-s1 libc6-dev-i386 \
+            libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev \
+            libncursesw5-dev libncurses-dev libpython3-dev libreadline-dev libssl-dev libtool \
+            libyaml-dev libz-dev lld llvm lrzsz mkisofs ninja-build p7zip p7zip-full patch pkgconf \
+            python3 python3-pip python3-ply python3-docutils python3-pyelftools qemu-utils re2c \
+            rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget \
+            xmlto xxd zlib1g-dev zstd
+          sudo apt-get clean
+          sudo timedatectl set-timezone "$TZ"
 
-    - name: Combine Disks
-      uses: easimon/maximize-build-space@master
-      with:
-        swap-size-mb: 1024
-        temp-reserve-mb: 100
-        root-reserve-mb: 1024
-        remove-dotnet: 'true'
-        remove-android: 'true'
-        remove-haskell: 'true'
-        remove-codeql: 'true'
-        remove-docker-images: 'true'
+      - name: Combine Disks
+        uses: easimon/maximize-build-space@master
+        with:
+          swap-size-mb: 1024
+          temp-reserve-mb: 100
+          root-reserve-mb: 1024
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
 
-    - name: Checkout Repository
-      id: checkout
-      uses: actions/checkout@main
-      with:
-        fetch-depth: 0
+      - name: Checkout Repository
+        id: checkout
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0
 
-    - name: Cache DL
-      uses: actions/cache@v5
-      with:
-        path: dl
-        key: mt798x-dl-v5-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+      - name: Cache DL
+        uses: actions/cache@v5
+        with:
+          path: dl
+          key: mt798x-dl-v5-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
 
-    - name: Cache Feeds
-      uses: actions/cache@v5
-      with:
-        path: feeds
-        key: mt798x-feeds-v5-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+      - name: Cache Feeds
+        uses: actions/cache@v5
+        with:
+          path: feeds
+          key: mt798x-feeds-v5-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
 
-    - name: Cache Toolchain
-      uses: RuijieNetworksCommunity/cache-wrt-toolchain@main
-      with:
-        mixkey: v2-${{ hashFiles('.github/workflows/cache-control') }}
+      - name: Cache Toolchain
+        uses: RuijieNetworksCommunity/cache-wrt-toolchain@main
+        with:
+          mixkey: v2-${{ hashFiles('.github/workflows/cache-control') }}
 
-    - name: Update Feeds
-      id: update-feeds
-      run: ./scripts/feeds update -a
+      - name: Update Feeds
+        id: update-feeds
+        run: ./scripts/feeds update -a
 
-    - name: Install Feeds
-      id: install-feeds
-      run: ./scripts/feeds install -a
+      - name: Install Feeds
+        id: install-feeds
+        run: ./scripts/feeds install -a
 
-    - name: Load Configuration
-      id: load-config
-      run: |
-        [ -e defconfig/mt7986-ruijie-max.config ] && cp defconfig/mt7986-ruijie-max.config .config
+      - name: Load Configuration
+        id: load-config
+        run: |
+          [ -e defconfig/mt7986-ruijie-max.config ] && cp defconfig/mt7986-ruijie-max.config .config
 
-    - name: Make Compile Configuration
-      id: make-compile-config
-      run: |
-        make defconfig
+      - name: Make Compile Configuration
+        id: make-compile-config
+        run: |
+          make defconfig
 
-    - name: Download Package
-      id: download-package
-      run: |
-        make download -j$(nproc)
-        find dl -size -1024c -exec ls -l {} \;
-        find dl -size -1024c -exec rm -f {} \;
+      - name: Download Package
+        id: download-package
+        run: |
+          make download -j$(nproc)
+          find dl -size -1024c -exec ls -l {} \;
+          find dl -size -1024c -exec rm -f {} \;
 
-    - name: Compile Toolchain
-      id: compile
-      run: |
-        echo -e "$(nproc) thread compile"
-        make -j$(($(nproc) * 3 / 2)) toolchain/install || make -j1 toolchain/install || make -j1 V=s toolchain/install
-        echo "status=success" >> $GITHUB_OUTPUT
+      - name: Compile Toolchain
+        id: compile
+        run: |
+          echo -e "$(nproc) thread compile"
+          make -j$(($(nproc) * 3 / 2)) toolchain/install || make -j1 toolchain/install || make -j1 V=s toolchain/install
+          echo "status=success" >> $GITHUB_OUTPUT
 
   mt7986-max:
     name: MT7986 Max Build
@@ -177,183 +177,184 @@ jobs:
     needs: [cache-toolchain]
 
     steps:
-    - name: Initialization Environment
-      id: env
-      env:
-        DEBIAN_FRONTEND: noninteractive
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y --no-install-recommends \
-          ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
-          bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gettext gcc-multilib \
-          g++-multilib git gnutls-dev gperf haveged help2man intltool lib32gcc-s1 libc6-dev-i386 \
-          libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses-dev \
-          libpython3-dev libreadline-dev libssl-dev libtool libyaml-dev libz-dev lld llvm lrzsz \
-          mkisofs ninja-build p7zip p7zip-full patch pkgconf python3 python3-pip python3-ply \
-          python3-docutils python3-pyelftools qemu-utils re2c rsync squashfs-tools swig texinfo \
-          uglifyjs upx-ucl unzip wget xmlto xxd zlib1g-dev zstd
-        sudo apt-get clean
-        sudo timedatectl set-timezone "$TZ"
+      - name: Initialization Environment
+        id: env
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
+            bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gettext gcc-multilib \
+            g++-multilib git gnutls-dev gperf haveged help2man intltool lib32gcc-s1 libc6-dev-i386 \
+            libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses-dev \
+            libpython3-dev libreadline-dev libssl-dev libtool libyaml-dev libz-dev lld llvm lrzsz \
+            mkisofs ninja-build p7zip p7zip-full patch pkgconf python3 python3-pip python3-ply \
+            python3-docutils python3-pyelftools qemu-utils re2c rsync squashfs-tools swig texinfo \
+            uglifyjs upx-ucl unzip wget xmlto xxd zlib1g-dev zstd
+          sudo apt-get clean
+          sudo timedatectl set-timezone "$TZ"
 
-    - name: Combine Disks
-      uses: easimon/maximize-build-space@master
-      with:
-        swap-size-mb: 1024
-        temp-reserve-mb: 100
-        root-reserve-mb: 1024
-        remove-dotnet: 'true'
-        remove-android: 'true'
-        remove-haskell: 'true'
-        remove-codeql: 'true'
-        remove-docker-images: 'true'
+      - name: Combine Disks
+        uses: easimon/maximize-build-space@master
+        with:
+          swap-size-mb: 1024
+          temp-reserve-mb: 100
+          root-reserve-mb: 1024
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
 
-    - name: Checkout Repository
-      id: checkout
-      uses: actions/checkout@main
-      with:
-        fetch-depth: 0
+      - name: Checkout Repository
+        id: checkout
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0
 
-    - name: Cache DL
-      uses: actions/cache@v5
-      with:
-        path: dl
-        key: mt798x-dl-v5-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+      - name: Cache DL
+        uses: actions/cache@v5
+        with:
+          path: dl
+          key: mt798x-dl-v5-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
 
-    - name: Cache Feeds
-      uses: actions/cache@v5
-      with:
-        path: feeds
-        key: mt798x-feeds-v5-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
+      - name: Cache Feeds
+        uses: actions/cache@v5
+        with:
+          path: feeds
+          key: mt798x-feeds-v5-${{ runner.os }}-${{ hashFiles('feeds.conf.default') }}-${{ hashFiles('.github/workflows/cache-control') }}
 
-    - name: Cache Toolchain
-      uses: RuijieNetworksCommunity/cache-wrt-toolchain@main
-      with:
-        mixkey: v2-${{ hashFiles('.github/workflows/cache-control') }}
+      - name: Cache Toolchain
+        uses: RuijieNetworksCommunity/cache-wrt-toolchain@main
+        with:
+          mixkey: v2-${{ hashFiles('.github/workflows/cache-control') }}
 
-    - name: Update Feeds
-      id: update-feeds
-      run: ./scripts/feeds update -a
+      - name: Update Feeds
+        id: update-feeds
+        run: ./scripts/feeds update -a
 
-    - name: Setup Go Environment
-      uses: actions/setup-go@v6
-      with:
-        go-version: '1.26'
-        cache: false
+      - name: Setup Go Environment
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.26'
+          cache: false
 
-    - name: Upgrade HomeProxy & sing-box
-      id: upgrade-packages
-      run: |
-        export GOTOOLCHAIN=auto
-        export GOPATH="$GITHUB_WORKSPACE/.go-cache"
-        export GOCACHE="$GITHUB_WORKSPACE/.go-build"
-        export GOTMPDIR="$GITHUB_WORKSPACE/.go-tmp"
-        mkdir -p "$GOPATH" "$GOCACHE" "$GOTMPDIR"
+      - name: Upgrade HomeProxy & sing-box
+        id: upgrade-packages
+        run: |
+          export GOTOOLCHAIN=auto
+          export GOPATH="$GITHUB_WORKSPACE/.go-cache"
+          export GOCACHE="$GITHUB_WORKSPACE/.go-build"
+          export GOTMPDIR="$GITHUB_WORKSPACE/.go-tmp"
+          mkdir -p "$GOPATH" "$GOCACHE" "$GOTMPDIR"
 
-        find package/ feeds/ -maxdepth 4 -iname "*homeproxy*" -exec rm -rf {} +
-        git clone --depth=1 -b dev https://github.com/immortalwrt/homeproxy.git package/luci-app-homeproxy
-        sed -i -E 's/\+sing-box(-full|-tiny)?//g' package/luci-app-homeproxy/Makefile
+          find package/ feeds/ -maxdepth 4 -iname "*homeproxy*" -exec rm -rf {} +
+          git clone --depth=1 -b dev https://github.com/immortalwrt/homeproxy.git package/luci-app-homeproxy
+          sed -i -E 's/\+sing-box(-full|-tiny)?//g' package/luci-app-homeproxy/Makefile
 
-        LATEST_TAG=$(curl -s https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
-        if [ -z "$LATEST_TAG" ]; then
-          LATEST_TAG="1.12.12"
-        fi
-        echo "=== Building sing-box v${LATEST_TAG} ==="
-        git clone --depth=1 -b "v${LATEST_TAG}" https://github.com/SagerNet/sing-box.git "$GITHUB_WORKSPACE/sing-box-src"
+          LATEST_TAG=$(curl -s https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+          if [ -z "$LATEST_TAG" ]; then
+            LATEST_TAG="1.12.12"
+          fi
+          echo "=== Building sing-box v${LATEST_TAG} ==="
+          git clone --depth=1 -b "v${LATEST_TAG}" https://github.com/SagerNet/sing-box.git "$GITHUB_WORKSPACE/sing-box-src"
 
-        cd "$GITHUB_WORKSPACE/sing-box-src"
-        CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM64=v8.0,crypto go build \
-          -v -trimpath \
-          -tags "with_quic,with_utls,with_gvisor,with_clash_api" \
-          -ldflags "-X github.com/sagernet/sing-box/constant.Version=${LATEST_TAG} -s -w -buildid=" \
-          -o "$GITHUB_WORKSPACE/sing-box-bin" \
-          ./cmd/sing-box
+          cd "$GITHUB_WORKSPACE/sing-box-src"
+          CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM64=v8.0,crypto go build \
+            -v -trimpath \
+            -tags "with_quic,with_utls,with_gvisor,with_clash_api" \
+            -ldflags "-X github.com/sagernet/sing-box/constant.Version=${LATEST_TAG} -s -w -buildid=" \
+            -o "$GITHUB_WORKSPACE/sing-box-bin" \
+            ./cmd/sing-box
 
-        cd "$GITHUB_WORKSPACE"
-        mkdir -p files/usr/bin
-        cp "$GITHUB_WORKSPACE/sing-box-bin" files/usr/bin/sing-box
-        chmod 555 files/usr/bin/sing-box
-        chmod -R +w "$GOPATH" "$GOCACHE" "$GOTMPDIR" 2>/dev/null || true
-        rm -rf "$GITHUB_WORKSPACE/sing-box-src" "$GITHUB_WORKSPACE/sing-box-bin" "$GOPATH" "$GOCACHE" "$GOTMPDIR"
+          cd "$GITHUB_WORKSPACE"
+          mkdir -p files/usr/bin
+          cp "$GITHUB_WORKSPACE/sing-box-bin" files/usr/bin/sing-box
+          chmod 555 files/usr/bin/sing-box
+          chmod -R +w "$GOPATH" "$GOCACHE" "$GOTMPDIR" 2>/dev/null || true
+          rm -rf "$GITHUB_WORKSPACE/sing-box-src" "$GITHUB_WORKSPACE/sing-box-bin" "$GOPATH" "$GOCACHE" "$GOTMPDIR"
 
-        file files/usr/bin/sing-box
-        ls -lh files/usr/bin/sing-box
-        SIZE=$(stat -c%s files/usr/bin/sing-box)
-        if [ "$SIZE" -lt 10000000 ]; then
-          echo "ERROR: sing-box binary too small ($SIZE bytes)"
-          exit 1
-        fi
+          file files/usr/bin/sing-box
+          ls -lh files/usr/bin/sing-box
+          SIZE=$(stat -c%s files/usr/bin/sing-box)
+          if [ "$SIZE" -lt 10000000 ]; then
+            echo "ERROR: sing-box binary too small ($SIZE bytes)"
+            exit 1
+          fi
 
-        mkdir -p files/etc/uci-defaults
-        printf '%s\n' \
-          "uci set network.lan.ipaddr='192.168.10.1'" \
-          "uci set system.@system[0].timezone='CST-8'" \
-          "uci set system.@system[0].zonename='Asia/Shanghai'" \
-          "uci set firewall.@defaults[0].flow_offloading='1'" \
-          "uci set firewall.@defaults[0].flow_offloading_hw='0'" \
-          "uci commit network" \
-          "uci commit system" \
-          "uci commit firewall" \
-          "exit 0" > files/etc/uci-defaults/99-custom
-        chmod 755 files/etc/uci-defaults/99-custom
-        rm -rf package/luci-theme-kucat
-        git clone --depth 1 https://github.com/sirpdboy/luci-theme-kucat.git package/luci-theme-kucat
+          mkdir -p files/etc/uci-defaults
+          printf '%s\n' \
+            "uci set network.lan.ipaddr='192.168.10.1'" \
+            "uci set system.@system[0].timezone='CST-8'" \
+            "uci set system.@system[0].zonename='Asia/Shanghai'" \
+            "uci set firewall.@defaults[0].flow_offloading='1'" \
+            "uci set firewall.@defaults[0].flow_offloading_hw='0'" \
+            "uci commit network" \
+            "uci commit system" \
+            "uci commit firewall" \
+            "exit 0" > files/etc/uci-defaults/99-custom
+          chmod 755 files/etc/uci-defaults/99-custom
+          rm -rf package/luci-theme-kucat
+          git clone --depth 1 https://github.com/sirpdboy/luci-theme-kucat.git package/luci-theme-kucat
+
       - name: Install Feeds
-      id: install-feeds
-      run: ./scripts/feeds install -a
+        id: install-feeds
+        run: ./scripts/feeds install -a
 
-    - name: Load Configuration
-      id: load-config
-      run: |
-        [ -e defconfig/mt7986-ruijie-max.config ] && cp defconfig/mt7986-ruijie-max.config .config
+      - name: Load Configuration
+        id: load-config
+        run: |
+          [ -e defconfig/mt7986-ruijie-max.config ] && cp defconfig/mt7986-ruijie-max.config .config
 
-    - name: Make Compile Configuration
-      id: make-compile-config
-      run: |
-        sed -i '/CONFIG_PACKAGE_sing-box/d' .config
-        sed -i '/CONFIG_DEVEL/d' .config
-        sed -i '/CONFIG_TARGET_OPTIONS/d' .config
-        sed -i '/CONFIG_TARGET_OPTIMIZATION/d' .config
-        echo 'CONFIG_DEVEL=y' >> .config
-        echo 'CONFIG_TARGET_OPTIONS=y' >> .config
-        echo 'CONFIG_TARGET_OPTIMIZATION="-O2 -pipe -mcpu=cortex-a53+crypto"' >> .config
-        echo "CONFIG_PACKAGE_kmod-nft-offload=y" >> .config
-        echo "CONFIG_PACKAGE_ca-bundle=y" >> .config
-        echo "CONFIG_PACKAGE_ca-certificates=y" >> .config
-        echo "CONFIG_PACKAGE_kmod-nft-socket=y" >> .config
-        echo "CONFIG_PACKAGE_kmod-nft-tproxy=y" >> .config
-        echo "CONFIG_PACKAGE_kmod-tun=y" >> .config
-        echo "CONFIG_PACKAGE_luci-app-homeproxy=y" >> .config
-        echo "CONFIG_PACKAGE_luci-i18n-homeproxy-zh-cn=y" >> .config
-        echo "# CONFIG_PACKAGE_sing-box is not set" >> .config
-        echo "# CONFIG_PACKAGE_sing-box-full is not set" >> .config
-        echo "# CONFIG_PACKAGE_sing-box-tiny is not set" >> .config
-        make defconfig
-        grep "CONFIG_TARGET_OPTIMIZATION" .config
+      - name: Make Compile Configuration
+        id: make-compile-config
+        run: |
+          sed -i '/CONFIG_PACKAGE_sing-box/d' .config
+          sed -i '/CONFIG_DEVEL/d' .config
+          sed -i '/CONFIG_TARGET_OPTIONS/d' .config
+          sed -i '/CONFIG_TARGET_OPTIMIZATION/d' .config
+          echo 'CONFIG_DEVEL=y' >> .config
+          echo 'CONFIG_TARGET_OPTIONS=y' >> .config
+          echo 'CONFIG_TARGET_OPTIMIZATION="-O2 -pipe -mcpu=cortex-a53+crypto"' >> .config
+          echo "CONFIG_PACKAGE_kmod-nft-offload=y" >> .config
+          echo "CONFIG_PACKAGE_ca-bundle=y" >> .config
+          echo "CONFIG_PACKAGE_ca-certificates=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-nft-socket=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-nft-tproxy=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-tun=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-homeproxy=y" >> .config
+          echo "CONFIG_PACKAGE_luci-i18n-homeproxy-zh-cn=y" >> .config
+          echo "# CONFIG_PACKAGE_sing-box is not set" >> .config
+          echo "# CONFIG_PACKAGE_sing-box-full is not set" >> .config
+          echo "# CONFIG_PACKAGE_sing-box-tiny is not set" >> .config
+          make defconfig
+          grep "CONFIG_TARGET_OPTIMIZATION" .config
 
-    - name: Download Package
-      id: download-package
-      run: |
-        make download -j$(nproc)
-        find dl -size -1024c -exec ls -l {} \;
-        find dl -size -1024c -exec rm -f {} \;
+      - name: Download Package
+        id: download-package
+        run: |
+          make download -j$(nproc)
+          find dl -size -1024c -exec ls -l {} \;
+          find dl -size -1024c -exec rm -f {} \;
 
-    - name: Compile Firmware
-      id: compile
-      run: |
-        echo -e "$(nproc) thread compile"
-        make -j$(($(nproc) * 3 / 2)) || make -j1 || make -j1 V=s
-        echo "status=success" >> $GITHUB_OUTPUT
+      - name: Compile Firmware
+        id: compile
+        run: |
+          echo -e "$(nproc) thread compile"
+          make -j$(($(nproc) * 3 / 2)) || make -j1 || make -j1 V=s
+          echo "status=success" >> $GITHUB_OUTPUT
 
-    - name: Check Disk Space
-      if: (!cancelled())
-      run: df -hT
+      - name: Check Disk Space
+        if: (!cancelled())
+        run: df -hT
 
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@main
-      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
-      with:
-        name: mt7986-max-bin
-        path: bin
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@main
+        if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
+        with:
+          name: mt7986-max-bin
+          path: bin
 
   max-release:
     name: Publish MT7986 Max Release
@@ -361,59 +362,59 @@ jobs:
     needs: [mt7986-max]
 
     steps:
-    - name: Checkout Repository
-      id: checkout
-      uses: actions/checkout@main
-      with:
-        fetch-depth: 2
+      - name: Checkout Repository
+        id: checkout
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 2
 
-    - name: Download MT7986 Max Artifacts
-      id: download-mt7986
-      if: (!cancelled())
-      uses: actions/download-artifact@main
-      with:
-        name: mt7986-max-bin
-        path: artifacts/mt7986
+      - name: Download MT7986 Max Artifacts
+        id: download-mt7986
+        if: (!cancelled())
+        uses: actions/download-artifact@main
+        with:
+          name: mt7986-max-bin
+          path: artifacts/mt7986
 
-    - name: Organize Files
-      id: organize
-      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
-      run: |
-        mkdir -p release
-        rm -rf artifacts/mt7986/packages
-        find artifacts/mt7986/targets/mediatek/filogic/ -type f ! -name "*.bin" -delete
-        find artifacts/mt7986/targets/mediatek/filogic/ -type f -name "*-bl2.bin" -delete
-        find artifacts/mt7986/targets/mediatek/filogic/ -mindepth 1 -type d -exec rm -rf {} +
-        cp -r artifacts/mt7986/targets/mediatek/filogic/*.bin release/
-        cd release
-        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-        echo "status=success" >> $GITHUB_OUTPUT
+      - name: Organize Files
+        id: organize
+        if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+        run: |
+          mkdir -p release
+          rm -rf artifacts/mt7986/packages
+          find artifacts/mt7986/targets/mediatek/filogic/ -type f ! -name "*.bin" -delete
+          find artifacts/mt7986/targets/mediatek/filogic/ -type f -name "*-bl2.bin" -delete
+          find artifacts/mt7986/targets/mediatek/filogic/ -mindepth 1 -type d -exec rm -rf {} +
+          cp -r artifacts/mt7986/targets/mediatek/filogic/*.bin release/
+          cd release
+          echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+          echo "status=success" >> $GITHUB_OUTPUT
 
-    - name: Generate Release TAG
-      id: tag
-      if: steps.organize.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
-      run: |
-        SHORT_HASH=$(git rev-parse --short HEAD)
-        BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD | tr '/' '-')
-        echo "release_tag=R$(date +"%y.%-m.%-d.%H%M")-$SHORT_HASH-$BRANCH_NAME-max" >> $GITHUB_OUTPUT
-        touch release.txt
-        {
-          echo "## Changes:"
-          echo ""
-          git log -1 --pretty=format:"- %s (%h) by %an"
-          echo ""
-          echo "### Diff:"
-          git diff --name-only HEAD^ HEAD | sed 's/^/- /'
-        } > release.txt
-        echo "status=success" >> $GITHUB_OUTPUT
+      - name: Generate Release TAG
+        id: tag
+        if: steps.organize.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
+        run: |
+          SHORT_HASH=$(git rev-parse --short HEAD)
+          BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD | tr '/' '-')
+          echo "release_tag=R$(date +"%y.%-m.%-d.%H%M")-$SHORT_HASH-$BRANCH_NAME-max" >> $GITHUB_OUTPUT
+          touch release.txt
+          {
+            echo "## Changes:"
+            echo ""
+            git log -1 --pretty=format:"- %s (%h) by %an"
+            echo ""
+            echo "### Diff:"
+            git diff --name-only HEAD^ HEAD | sed 's/^/- /'
+          } > release.txt
+          echo "status=success" >> $GITHUB_OUTPUT
 
-    - name: Upload Release
-      uses: softprops/action-gh-release@master
-      if: steps.tag.outputs.status == 'success' && !cancelled()
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ steps.tag.outputs.release_tag }}
-        body_path: release.txt
-        files: ${{ env.FIRMWARE }}/*
-        prerelease: true
+      - name: Upload Release
+        uses: softprops/action-gh-release@master
+        if: steps.tag.outputs.status == 'success' && !cancelled()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag.outputs.release_tag }}
+          body_path: release.txt
+          files: ${{ env.FIRMWARE }}/*
+          prerelease: true
