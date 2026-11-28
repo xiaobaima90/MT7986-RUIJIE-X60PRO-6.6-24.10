@@ -415,4 +415,3 @@ jobs:
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
         prerelease: true
-        
