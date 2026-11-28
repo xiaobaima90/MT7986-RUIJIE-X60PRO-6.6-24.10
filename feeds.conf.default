@@ -3,5 +3,3 @@ src-git luci https://github.com/RuijieNetworksCommunity/luci.git;openwrt-24.10
 src-git routing https://github.com/openwrt/routing.git;openwrt-24.10
 src-git telephony https://github.com/openwrt/telephony.git;openwrt-24.10
 src-git homeproxy https://github.com/immortalwrt/homeproxy.git
-src-git kucat https://github.com/sirpdboy/luci-theme-kucat.git;js
-src-git kucat_config https://github.com/sirpdboy/luci-app-kucat-config.git;js
