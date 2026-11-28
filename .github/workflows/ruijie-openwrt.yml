@@ -187,7 +187,7 @@ jobs:
             ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
             bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gettext gcc-multilib \
             g++-multilib git gnutls-dev gperf haveged help2man intltool lib32gcc-s1 libc6-dev-i386 \
-            libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses-dev \
+            libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev \
             libpython3-dev libreadline-dev libssl-dev libtool libyaml-dev libz-dev lld llvm lrzsz \
             mkisofs ninja-build p7zip p7zip-full patch pkgconf python3 python3-pip python3-ply \
             python3-docutils python3-pyelftools qemu-utils re2c rsync squashfs-tools swig texinfo \
@@ -295,8 +295,10 @@ jobs:
             "uci commit firewall" \
             "exit 0" > files/etc/uci-defaults/99-custom
           chmod 755 files/etc/uci-defaults/99-custom
-          rm -rf package/luci-theme-kucat
-          git clone --depth 1 https://github.com/anothaDev/luci-theme-vantage.git package/luci-theme-vantage
+
+          rm -rf package/luci-theme-kucat package/luci-theme-vantage package/luci-theme-argon
+          git clone --depth 1 -b master https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon
+
       - name: Install Feeds
         id: install-feeds
         run: ./scripts/feeds install -a
@@ -313,6 +315,11 @@ jobs:
           sed -i '/CONFIG_DEVEL/d' .config
           sed -i '/CONFIG_TARGET_OPTIONS/d' .config
           sed -i '/CONFIG_TARGET_OPTIMIZATION/d' .config
+          sed -i '/CONFIG_PACKAGE_luci-theme-bootstrap/d' .config
+          sed -i '/CONFIG_PACKAGE_luci-theme-kucat/d' .config
+          sed -i '/CONFIG_PACKAGE_luci-theme-vantage/d' .config
+          sed -i '/CONFIG_PACKAGE_luci-app-vantage/d' .config
+          sed -i '/CONFIG_PACKAGE_luci-theme-argon/d' .config
           echo 'CONFIG_DEVEL=y' >> .config
           echo 'CONFIG_TARGET_OPTIONS=y' >> .config
           echo 'CONFIG_TARGET_OPTIMIZATION="-O2 -pipe -mcpu=cortex-a53+crypto"' >> .config
@@ -324,11 +331,17 @@ jobs:
           echo "CONFIG_PACKAGE_kmod-tun=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-homeproxy=y" >> .config
           echo "CONFIG_PACKAGE_luci-i18n-homeproxy-zh-cn=y" >> .config
+          echo "CONFIG_PACKAGE_luci-theme-argon=y" >> .config
+          echo "# CONFIG_PACKAGE_luci-theme-bootstrap is not set" >> .config
+          echo "# CONFIG_PACKAGE_luci-theme-kucat is not set" >> .config
+          echo "# CONFIG_PACKAGE_luci-theme-vantage is not set" >> .config
+          echo "# CONFIG_PACKAGE_luci-app-vantage is not set" >> .config
           echo "# CONFIG_PACKAGE_sing-box is not set" >> .config
           echo "# CONFIG_PACKAGE_sing-box-full is not set" >> .config
           echo "# CONFIG_PACKAGE_sing-box-tiny is not set" >> .config
           make defconfig
           grep "CONFIG_TARGET_OPTIMIZATION" .config
+          grep "CONFIG_PACKAGE_luci-theme-" .config
 
       - name: Download Package
         id: download-package
@@ -417,5 +430,3 @@ jobs:
           body_path: release.txt
           files: ${{ env.FIRMWARE }}/*
           prerelease: true
-
-          
