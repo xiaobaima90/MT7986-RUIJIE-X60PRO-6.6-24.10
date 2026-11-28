@@ -296,8 +296,7 @@ jobs:
             "exit 0" > files/etc/uci-defaults/99-custom
           chmod 755 files/etc/uci-defaults/99-custom
           rm -rf package/luci-theme-kucat
-          git clone --depth 1 https://github.com/sirpdboy/luci-theme-kucat.git package/luci-theme-kucat
-
+          git clone --depth 1 https://github.com/anothaDev/luci-theme-vantage.git package/luci-theme-vantage
       - name: Install Feeds
         id: install-feeds
         run: ./scripts/feeds install -a
